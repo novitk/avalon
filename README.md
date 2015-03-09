@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/abbat/avalon.png?branch=master)](http://travis-ci.org/rsdn/avalon)
+[![Build Status](https://secure.travis-ci.org/abbat/avalon.png?branch=master)](http://travis-ci.org/abbat/avalon)
 
 # Avalon
 
