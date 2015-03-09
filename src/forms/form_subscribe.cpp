@@ -1,6 +1,5 @@
 #include "form_subscribe.h"
 //----------------------------------------------------------------------------------------------
-#include "form_request.h"
 #include "webservice.h"
 #include "widgets/tree_widget_item.h"
 #include "storage/storage_factory.h"
@@ -183,38 +182,11 @@ void FormSubscribe::button_ok_clicked ()
 
 void FormSubscribe::button_refresh_clicked ()
 {
-	// получение текста запроса
-	QSettings settings;
+	AWebservice webservice(this);
 
-	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
-	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
-
-	QString header;
-	QString data;
-
-	AWebservice::getForumList_WebserviceQuery(header, data);
-
-	// запрос к вебсервису
-	FormRequest* form = new FormRequest(this, rsdn_host, rsdn_port, header, data);
-
-	if (form->exec() == QDialog::Accepted)
+	AForumGroupInfoList list;
+	if (webservice.getForumList(list) == true)
 	{
-		bool error;
-		QString answer = form->getResponse(error);
-
-		delete form;
-
-		if (error == true)
-		{
-			QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-			return;
-		}
-
-		// парсинг ответа
-		AForumGroupInfoList list;
-
-		AWebservice::getForumList_WebserviceParse(answer, list);
-
 		// получение хранилища
 		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
@@ -235,7 +207,7 @@ void FormSubscribe::button_refresh_clicked ()
 		reload();
 	}
 	else
-		delete form;
+		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), webservice.error());
 }
 //----------------------------------------------------------------------------------------------
 

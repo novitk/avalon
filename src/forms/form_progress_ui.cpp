@@ -1,11 +1,7 @@
-#include "form_request_ui.h"
+#include "form_progress_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormRequestUI::FormRequestUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormProgressUI::FormProgressUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("HTTP"));
 
@@ -34,10 +30,6 @@ FormRequestUI::FormRequestUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 	m_list_progress = new QListWidget(this);
 	m_list_progress->setFocusPolicy(Qt::NoFocus);
 
-	#ifndef Q_WS_WIN
-		m_list_progress->setFrameShadow(QFrame::Plain);
-	#endif
-
 	m_layout_form->addWidget(m_list_progress);
 
 	m_layout_button = new QHBoxLayout();
@@ -54,7 +46,7 @@ FormRequestUI::FormRequestUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 }
 //----------------------------------------------------------------------------------------------
 
-FormRequestUI::~FormRequestUI ()
+FormProgressUI::~FormProgressUI ()
 {
 	delete m_layout_button;
 	delete m_layout_form;

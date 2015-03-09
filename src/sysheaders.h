@@ -12,7 +12,6 @@
 
 #include <QDir>
 #include <QHash>
-#include <QHttp>
 #include <QIcon>
 #include <QFrame>
 #include <QTimer>
@@ -64,11 +63,14 @@
 #include <QLibraryInfo>
 #include <QIntValidator>
 #include <QNetworkProxy>
+#include <QNetworkReply>
 #include <QDesktopWidget>
 #include <QTemporaryFile>
+#include <QNetworkRequest>
 #include <QCalendarWidget>
 #include <QDesktopServices>
 #include <QSslConfiguration>
+#include <QNetworkAccessManager>
 
 //
 // системные заголовочные файлы
@@ -199,6 +201,6 @@ class AProfiler
 		timeval m_stop;
 };
 
-#endif // #ifndef Q_WS_WIN
+#endif   // #ifndef Q_WS_WIN
 
-#endif
+#endif   // _avalon_sysheaders_h_
