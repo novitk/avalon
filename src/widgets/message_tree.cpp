@@ -23,6 +23,8 @@ typedef ATreeWidgetItemT<AMessageInfoGUI> MessageTreeWidgetItem;
 
 AMessageTree::AMessageTree (QWidget* parent, QWidget* form) : QTreeWidget (parent), IMessageTree ()
 {
+	setFrameShadow(QFrame::Plain);
+
 	//
 	// инициализация полей
 	//

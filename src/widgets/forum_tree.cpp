@@ -32,6 +32,8 @@ typedef ATreeWidgetItemT<AForumInfoGUI> ForumTreeWidgetItem;
 
 AForumTree::AForumTree (QWidget* parent, QWidget* form) : QTreeWidget (parent), IForumTree ()
 {
+	setFrameShadow(QFrame::Plain);
+
 	//
 	// инициализация полей
 	//
