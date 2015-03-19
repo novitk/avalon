@@ -20,7 +20,7 @@ class ADatabase :
 
 		/*!
 		 * \brief Конструктор объекта для работы с БД
-		 * \param type Тип БД, для MySQL type = "QMYSQL" (см. документацию Qt)
+		 * \param type Тип БД, для SQLite type = "SQLite" (см. документацию Qt)
 		 */
 		ADatabase  (const QString& type);
 		~ADatabase ();

@@ -13,49 +13,61 @@ PRAGMA incremental_vacuum(10);
 
 CREATE TABLE `broken`
 (
-	`id_message` INTEGER NOT NULL PRIMARY KEY,
-	`is_topic`   INTEGER NOT NULL
+	--
+	-- список поломанных топиков/сообщений
+	--
+	`id_message` INTEGER NOT NULL PRIMARY KEY,   -- id топика/сообщения
+	`is_topic`   INTEGER NOT NULL                -- флаг того, что это топик, а не сообщение
 );
 
 CREATE TABLE `forum`
 (
-	`id`         INTEGER      NOT NULL PRIMARY KEY,
-	`id_group`   INTEGER      NOT NULL,
-	`short_name` VARCHAR(64)  NOT NULL,
-	`name`       VARCHAR(128) NOT NULL,
-	`rated`      INTEGER      NOT NULL,
-	`in_top`     INTEGER      NOT NULL,
-	`rate_limit` INTEGER      NOT NULL
+	--
+	-- список форумов
+	--
+	`id`         INTEGER      NOT NULL PRIMARY KEY,   -- id
+	`id_group`   INTEGER      NOT NULL,               -- id группы форумов
+	`short_name` VARCHAR(64)  NOT NULL,               -- короткое имя форума
+	`name`       VARCHAR(128) NOT NULL,               -- полное имя форума
+	`rated`      INTEGER      NOT NULL,               -- оценивается ли форум
+	`in_top`     INTEGER      NOT NULL,               -- участвует ли оценки этого форума в топе
+	`rate_limit` INTEGER      NOT NULL                -- лимит оценки в форуме
 );
 
 CREATE TABLE `group`
 (
-	`id`         INTEGER      NOT NULL PRIMARY KEY,
-	`name`       VARCHAR(100) NOT NULL,
-	`sort_order` INTEGER      NOT NULL
+	--
+	-- список групп форумов
+	--
+	`id`         INTEGER      NOT NULL PRIMARY KEY,   -- id
+	`name`       VARCHAR(100) NOT NULL,               -- наименование группы
+	`sort_order` INTEGER      NOT NULL                -- порядок сортировки
 );
 
 CREATE TABLE `message`
 (
-	`id`               INTEGER      NOT NULL PRIMARY KEY,
-	`id_topic`         INTEGER      NOT NULL,
-	`id_parent`        INTEGER      NOT NULL,
-	`id_user`          INTEGER      NOT NULL,
-	`id_forum`         INTEGER      NOT NULL,
-	`subject`          VARCHAR(128) NOT NULL,
-	`message_name`     VARCHAR(160) NOT NULL,
-	`user_nick`        VARCHAR(100) NOT NULL,
-	`message`          BLOB         NOT NULL,
-	`id_article`       INTEGER      NOT NULL,
-	`message_date`     INTEGER      NOT NULL,
-	`update_date`      INTEGER      NOT NULL,
-	`user_role`        VARCHAR(50)  NOT NULL,
-	`user_title`       VARCHAR(100) NOT NULL,
-	`user_title_color` INTEGER      NOT NULL,
-	`last_moderated`   INTEGER      NOT NULL,
-	`closed`           INTEGER      NOT NULL,
-	`has_child`        INTEGER      NOT NULL,
-	`compressed`       INTEGER      NOT NULL
+	--
+	-- сообщения
+	--
+	`id`               INTEGER      NOT NULL PRIMARY KEY,   -- id сообщения
+	`id_topic`         INTEGER      NOT NULL,               -- id темы
+	`id_parent`        INTEGER      NOT NULL,               -- id родительского сообщения
+	`id_user`          INTEGER      NOT NULL,               -- id автора
+	`id_forum`         INTEGER      NOT NULL,               -- id форума
+	`subject`          VARCHAR(128) NOT NULL,               -- тема сообщения
+	`message_name`     VARCHAR(160) NOT NULL,               -- имя сообщения
+	`user_nick`        VARCHAR(100) NOT NULL,               -- имя автора сообщения
+	`message`          BLOB         NOT NULL,               -- текст сообщения
+	`id_article`       INTEGER      NOT NULL,               -- id статьи, если сообщение является статьей или 0
+	`message_date`     INTEGER      NOT NULL,               -- дата создания сообщения
+	`update_date`      INTEGER      NOT NULL,               -- дата обновления сообщения или 0
+	`user_role`        VARCHAR(50)  NOT NULL,               -- статус автора сообщения
+	`user_title`       VARCHAR(100) NOT NULL,               -- повязка пользователя
+	`user_title_color` INTEGER      NOT NULL,               -- цвет повязки пользователя
+	`last_moderated`   INTEGER      NOT NULL,               -- дата последнего переноса сообщения
+	`closed`           INTEGER      NOT NULL,               -- флаг закрытия темы
+	`has_child`        INTEGER      NOT NULL,               -- флаг наличия дочерних сообщений
+	`compressed`       INTEGER      NOT NULL                -- флаг сжатия тела сообщения
 );
 
 CREATE INDEX `message_ix_id_topic`              ON `message` (`id_topic`);
@@ -67,20 +79,26 @@ CREATE INDEX `message_ix_id_forum_message_date` ON `message` (`id_forum`, `messa
 
 CREATE TABLE `message2send`
 (
-	`id`        INTEGER      NOT NULL PRIMARY KEY,
-	`id_parent` INTEGER      NOT NULL,
-	`id_forum`  INTEGER      NOT NULL,
-	`subject`   VARCHAR(128) NOT NULL,
-	`message`   TEXT         NOT NULL,
-	`date`      INTEGER      NOT NULL,
-	`draft`     INTEGER      NOT NULL
+	--
+	-- сообщения к отправке
+	--
+	`id`        INTEGER      NOT NULL PRIMARY KEY,   -- id сообщения (локальный)
+	`id_parent` INTEGER      NOT NULL,               -- id родителя
+	`id_forum`  INTEGER      NOT NULL,               -- id форума
+	`subject`   VARCHAR(128) NOT NULL,               -- тема
+	`message`   TEXT         NOT NULL,               -- текст сообщения
+	`date`      INTEGER      NOT NULL,               -- дата и время занесения
+	`draft`     INTEGER      NOT NULL                -- флаг черновика
 );
 
 CREATE TABLE `message_topic`
 (
-	`id_message`   INTEGER NOT NULL PRIMARY KEY,
-	`id_forum`     INTEGER NOT NULL,
-	`message_date` INTEGER NOT NULL,
+	--
+	-- список топиков
+	--
+	`id_message`   INTEGER NOT NULL PRIMARY KEY,   -- id сообщения
+	`id_forum`     INTEGER NOT NULL,               -- id форума
+	`message_date` INTEGER NOT NULL,               -- дата создания сообщения
 	FOREIGN KEY (`id_message`) REFERENCES `message` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -88,86 +106,113 @@ CREATE INDEX `message_topic_ix_id_forum` ON `message_topic` (`id_forum`);
 
 CREATE TABLE `moderate`
 (
-	`id_message` INTEGER NOT NULL,
-	`id_topic`   INTEGER NOT NULL,
-	`id_user`    INTEGER NOT NULL,
-	`id_forum`   INTEGER NOT NULL,
-	`created`    INTEGER NOT NULL,
+	--
+	-- таблица бомбочек
+	--
+	`id_message` INTEGER NOT NULL,   -- id сообщения
+	`id_topic`   INTEGER NOT NULL,   -- id топика
+	`id_user`    INTEGER NOT NULL,   -- id пользователя
+	`id_forum`   INTEGER NOT NULL,   -- id форума
+	`created`    INTEGER NOT NULL,   -- дата
 	PRIMARY KEY (`id_message`, `id_user`)
 );
 
 CREATE TABLE `moderate2send`
 (
-	`id`           INTEGER     NOT NULL PRIMARY KEY,
-	`id_message`   INTEGER     NOT NULL,
-	`action`       VARCHAR(32) NOT NULL,
-	`id_forum`     INTEGER     NOT NULL,
-	`description`  TEXT        NOT NULL,
-	`as_moderator` INTEGER     NOT NULL,
-	`date`         INTEGER     NOT NULL
+	--
+	-- модерилки к отправке
+	--
+	`id`           INTEGER     NOT NULL PRIMARY KEY,   -- id (локальный)
+	`id_message`   INTEGER     NOT NULL,               -- id сообщения
+	`action`       VARCHAR(32) NOT NULL,               -- действие {MoveMessage, DeleteMessage, DeleteThread, DeleteErrorMessage, SplitThread, CloseTopic, OpenTopic}
+	`id_forum`     INTEGER     NOT NULL,               -- id форума для перемещения
+	`description`  TEXT        NOT NULL,               -- описание
+	`as_moderator` INTEGER     NOT NULL,               -- флаг "как модератор"
+	`date`         INTEGER     NOT NULL                -- дата добавления
 );
 
 CREATE TABLE `rating`
 (
-	`id_message`  INTEGER NOT NULL,
-	`id_topic`    INTEGER NOT NULL,
-	`id_user`     INTEGER NOT NULL,
-	`user_rating` INTEGER NOT NULL,
-	`rate`        INTEGER NOT NULL,
-	`rate_date`   INTEGER NOT NULL,
-	`rate_type`   INTEGER NOT NULL,
+	--
+	-- таблица рейтинга
+	--
+	`id_message`  INTEGER NOT NULL,   -- id сообщения
+	`id_topic`    INTEGER NOT NULL,   -- id топика
+	`id_user`     INTEGER NOT NULL,   -- id пользователя
+	`user_rating` INTEGER NOT NULL,   -- рейтинг пользователя
+	`rate`        INTEGER NOT NULL,   -- оценка
+	`rate_date`   INTEGER NOT NULL,   -- дата
+	`rate_type`   INTEGER NOT NULL,   -- тип оценки (0 - смайл, 1 - +/-, 2 - балл)
 	PRIMARY KEY (`id_message`, `id_user`, `rate_type`)
 );
 
 CREATE TABLE `rating2send`
 (
-	`id`         INTEGER NOT NULL PRIMARY KEY,
-	`id_message` INTEGER NOT NULL,
-	`rate`       INTEGER NOT NULL,
-	`date`       INTEGER NOT NULL
+	--
+	-- рейтинг к отправке
+	--
+	`id`         INTEGER NOT NULL PRIMARY KEY,   -- id (локальный)
+	`id_message` INTEGER NOT NULL,               -- id сообщения
+	`rate`       INTEGER NOT NULL,               -- рейтинг
+	`date`       INTEGER NOT NULL                -- дата добавления
 );
 
 CREATE TABLE `row_version`
 (
-	`key`   VARCHAR(100) NOT NULL PRIMARY KEY,
-	`value` VARCHAR(100) NOT NULL
+	--
+	-- версии данных
+	--
+	`key`   VARCHAR(100) NOT NULL PRIMARY KEY,   -- ключ версии
+	`value` VARCHAR(100) NOT NULL                -- значение версии
 );
 
 CREATE TABLE `subscribed`
 (
-	`id_forum` INTEGER NOT NULL PRIMARY KEY,
-	`is_first` INTEGER NOT NULL
+	--
+	-- список форумов, на которые подписан пользователь
+	--
+	`id_forum` INTEGER NOT NULL PRIMARY KEY,   -- id форума
+	`is_first` INTEGER NOT NULL                -- была ли раньше подписка на форум true - нет, false - да
 );
 
 CREATE TABLE `unread`
 (
-	`id_message`     INTEGER NOT NULL PRIMARY KEY,
-	`id_parent`      INTEGER NOT NULL,
-	`id_forum`       INTEGER NOT NULL,
-	`id_topic`       INTEGER NOT NULL,
-	`id_parent_user` INTEGER NOT NULL,
-	`message_date`   INTEGER NOT NULL
+	--
+	-- список непрочитанных сообщений
+	--
+	`id_message`     INTEGER NOT NULL PRIMARY KEY,   -- id непрочитанного сообщения
+	`id_parent`      INTEGER NOT NULL,               -- id родительского сообщения
+	`id_forum`       INTEGER NOT NULL,               -- id форума
+	`id_topic`       INTEGER NOT NULL,               -- id топика
+	`id_parent_user` INTEGER NOT NULL,               -- id пользователя, которому идет ответ
+	`message_date`   INTEGER NOT NULL                -- дата отправки сообщения
 );
 
 CREATE TABLE `user`
 (
-	`id`             INTEGER      NOT NULL PRIMARY KEY,
-	`name`           VARCHAR(60)  NOT NULL,
-	`nick`           VARCHAR(100) NOT NULL,
-	`real_name`      VARCHAR(80)  NOT NULL,
-	`email`          VARCHAR(60)  NOT NULL,
-	`homepage`       VARCHAR(120) NOT NULL,
-	`specialization` VARCHAR(100) NOT NULL,
-	`where_from`     VARCHAR(100) NOT NULL,
-	`origin`         VARCHAR(258) NOT NULL
+	--
+	-- список пользователей
+	--
+	`id`             INTEGER      NOT NULL PRIMARY KEY,   -- id пользователя
+	`name`           VARCHAR(60)  NOT NULL,               -- логин пользователя
+	`nick`           VARCHAR(100) NOT NULL,               -- псевдоним пользователя
+	`real_name`      VARCHAR(80)  NOT NULL,               -- реальное имя пользователя
+	`email`          VARCHAR(60)  NOT NULL,               -- публичный email пользователя
+	`homepage`       VARCHAR(120) NOT NULL,               -- домашняя страница
+	`specialization` VARCHAR(100) NOT NULL,               -- специализация
+	`where_from`     VARCHAR(100) NOT NULL,               -- откуда
+	`origin`         VARCHAR(258) NOT NULL                -- подпись
 );
 
 CREATE INDEX `user_ix_name` ON `user` (`name`);
 
 CREATE TABLE `version`
 (
-	`key`   VARCHAR(100) NOT NULL PRIMARY KEY,
-	`value` VARCHAR(100) NOT NULL
+	--
+	-- версии хранилища (по факту не используется)
+	--
+	`key`   VARCHAR(100) NOT NULL PRIMARY KEY,   -- ключ версии
+	`value` VARCHAR(100) NOT NULL                -- значение версии
 );
 
 ANALYZE;

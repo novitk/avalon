@@ -186,26 +186,6 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_label_database_type->setText(QString::fromUtf8("тип"));
 	m_layout_label_storage->addWidget(m_label_database_type);
 
-	m_label_database_host = new QLabel(this);
-	m_label_database_host->setText(QString::fromUtf8("хост"));
-	m_layout_label_storage->addWidget(m_label_database_host);
-
-	m_label_database_port = new QLabel(this);
-	m_label_database_port->setText(QString::fromUtf8("порт / сокет"));
-	m_layout_label_storage->addWidget(m_label_database_port);
-
-	m_label_database_name = new QLabel(this);
-	m_label_database_name->setText(QString::fromUtf8("схема"));
-	m_layout_label_storage->addWidget(m_label_database_name);
-
-	m_label_database_login = new QLabel(this);
-	m_label_database_login->setText(QString::fromUtf8("логин"));
-	m_layout_label_storage->addWidget(m_label_database_login);
-
-	m_label_database_password = new QLabel(this);
-	m_label_database_password->setText(QString::fromUtf8("пароль"));
-	m_layout_label_storage->addWidget(m_label_database_password);
-
 	m_label_database_file = new QLabel(this);
 	m_label_database_file->setText(QString::fromUtf8("файл"));
 	m_layout_label_storage->addWidget(m_label_database_file);
@@ -218,25 +198,8 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_storage->addLayout(m_layout_text_storage);
 
 	m_combo_database_type = new QComboBox(this);
-	m_combo_database_type->insertItem(0, "MySQL");
 	m_combo_database_type->insertItem(0, "SQLite");
 	m_layout_text_storage->addWidget(m_combo_database_type);
-
-	m_text_database_host = new QLineEdit(this);
-	m_layout_text_storage->addWidget(m_text_database_host);
-
-	m_text_database_port = new QLineEdit(this);
-	m_layout_text_storage->addWidget(m_text_database_port);
-
-	m_text_database_name = new QLineEdit(this);
-	m_layout_text_storage->addWidget(m_text_database_name);
-
-	m_text_database_login = new QLineEdit(this);
-	m_layout_text_storage->addWidget(m_text_database_login);
-
-	m_text_database_password = new QLineEdit(this);
-	m_text_database_password->setEchoMode(QLineEdit::Password);
-	m_layout_text_storage->addWidget(m_text_database_password);
 
 	m_layout_database_file = new QHBoxLayout();
 

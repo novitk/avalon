@@ -59,19 +59,9 @@ class FormSettingsUI : public QDialog
 		            QHBoxLayout* m_layout_storage;                    /*!< \brief Общий layout для настроек хранилища     */
 		               QVBoxLayout* m_layout_label_storage;           /*!< \brief Layout для надписей                     */
 		                  QLabel* m_label_database_type;              /*!< \brief Тип хранилища                           */
-		                  QLabel* m_label_database_host;              /*!< \brief Хост БД                                 */
-		                  QLabel* m_label_database_port;              /*!< \brief Порт/сокет БД                           */
-		                  QLabel* m_label_database_name;              /*!< \brief Имя базы                                */
-		                  QLabel* m_label_database_login;             /*!< \brief Логин БД                                */
-		                  QLabel* m_label_database_password;          /*!< \brief Пароль БД                               */
 		                  QLabel* m_label_database_file;              /*!< \brief Файл базы (для файловых БД)             */
 		               QVBoxLayout* m_layout_text_storage;            /*!< \brief Layout для текстовых полей              */
 		                  QComboBox* m_combo_database_type;           /*!< \brief Тип базы хранилища                      */
-		                  QLineEdit* m_text_database_host;            /*!< \brief Хост БД                                 */
-		                  QLineEdit* m_text_database_port;            /*!< \brief Порт/сокет БД                           */
-		                  QLineEdit* m_text_database_name;            /*!< \brief Имя базы                                */
-		                  QLineEdit* m_text_database_login;           /*!< \brief Логин БД                                */
-		                  QLineEdit* m_text_database_password;        /*!< \brief Пароль БД                               */
 		                  QHBoxLayout* m_layout_database_file;        /*!< \brief Layout для поля выбора файла            */
 		                     QLineEdit*   m_text_database_file;       /*!< \brief Файл базы (для файловых БД)             */
 		                     QPushButton* m_button_database_file;     /*!< \brief Кнопка выбора файла базы                */
