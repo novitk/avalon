@@ -7,7 +7,7 @@
 # Загрузка / Установка
 
 * [Debian, Ubuntu](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
-* [Fedora, openSUSE](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
+* [Fedora, openSUSE, CentOS](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Ubuntu PPA](https://launchpad.net/~abbat/+archive/ubuntu/avalon) - `ppa:abbat/avalon`
 * Windows: [avalon_1.0_win32_r442.zip](https://yadi.sk/d/8gpACnzAdxMr3) (30.5MB)
 
