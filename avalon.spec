@@ -13,13 +13,13 @@ Requires:      libQtWebKit4
 BuildRequires: libQtWebKit-devel
 %endif
 
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?centos}
 Requires:      qtwebkit
 BuildRequires: qtwebkit-devel
 %endif
 
 %define qmake qmake
-%if 0%{?fedora}
+%if 0%{?fedora} || 0%{?centos}
 %define qmake qmake-qt4
 %endif
 
