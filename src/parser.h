@@ -63,6 +63,7 @@ typedef enum
 	pbtOCaml,       /*!< \brief Блок OCaml                */
 	pbtProlog,      /*!< \brief Блок Prolog               */
 	pbtPython,      /*!< \brief Блок Python               */
+	pbtRust,        /*!< \brief Блок Rust                 */
 	pbtRuby,        /*!< \brief Блок Ruby                 */
 	pbtNemerle,     /*!< \brief Блок Nemerle              */
 	pbtTagline,     /*!< \brief Блок подписи              */

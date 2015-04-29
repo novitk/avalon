@@ -21,9 +21,9 @@ QString AFormatter::headHTML ()
 
 	// https://tech.yandex.ru/jslibs/#highlight
 	QStringList lang;
-	lang << "bash" << "cmake" << "cpp" << "cs" << "css" << "delphi" << "diff" << "dos" << "http" << "ini"
-	     << "java" << "javascript" << "json" << "lisp" << "lua" << "perl" << "php" << "python" << "ruby"
-	     << "sql" << "vbscript" << "xml";
+	lang << "avrasm" << "bash" << "cmake" << "cpp" << "cs" << "css" << "delphi" << "diff" << "dos" << "erlang"
+	     << "haskell" << "http" << "ini" << "java" << "javascript" << "json" << "lisp" << "lua" << "perl"
+	     << "php" << "python" << "ruby" << "rust" << "sql" << "vbscript" << "xml";
 
 	QString langs;
 	for (int i = 0; i < lang.count(); i++)
@@ -338,6 +338,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 			{ pbtOCaml,     "lisp"     },
 			{ pbtProlog,    "lisp"     },
 			{ pbtPython,    "python"   },
+			{ pbtPython,    "rust"     },
 			{ pbtRuby,      "ruby"     },
 			{ pbtNemerle,   "cs"       },
 			{ pbtText,      NULL       }  // last
