@@ -62,7 +62,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc README.md src/sql/avalon.mysql.sql src/sql/avalon.sqlite.sql
+%doc README.md
 %{_bindir}/avalon
 %{_datadir}/pixmaps/avalon.xpm
 %{_datadir}/applications/avalon.desktop
