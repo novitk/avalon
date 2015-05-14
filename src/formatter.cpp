@@ -43,6 +43,13 @@ QString AFormatter::headHTML ()
 
 QString AFormatter::subjectHTML (const AMessageInfo& message, const AForumInfo* forum)
 {
+	// тема письма хранится без html замен
+	QString subject = message.Subject;
+
+	subject.replace("&", "&amp;");
+	subject.replace("<", "&lt;");
+	subject.replace(">", "&gt;");
+
 	QString pad    = "			";
 	QString result = pad + "<div id='title'>\n";
 
@@ -50,10 +57,10 @@ QString AFormatter::subjectHTML (const AMessageInfo& message, const AForumInfo* 
 	{
 		result +=
 			pad + "	<a id='move_to_thread' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
-			pad + "	<a id='subject' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + message.Subject + "</a>\n";
+			pad + "	<a id='subject' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + subject + "</a>\n";
 	}
 	else
-		result += pad + "<p id='subject'>" + message.Subject + "</p>\n";
+		result += pad + "<p id='subject'>" + subject + "</p>\n";
 
 	result += pad + "</div>\n";
 
@@ -199,13 +206,6 @@ QString AFormatter::formatMessage (const AMessageInfo& message, const AForumInfo
 
 	// парсинг сообщения
 	AParsedBlockList list = AParser::parseBlocks(message.Message);
-
-	// тема письма хранится без html замен
-	QString subject = message.Subject;
-
-	subject.replace("&", "&amp;");
-	subject.replace("<", "&lt;");
-	subject.replace(">", "&gt;");
 
 	// шапка html
 	QString result = headHTML() +
