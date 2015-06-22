@@ -43,7 +43,7 @@ Offile client for Russian Software Developer Network
     "DEFINES += AVALON_PACKAGE" \
     src
 %{qmake} avalon.pro
-make
+make %{?_smp_mflags}
 
 
 %install
