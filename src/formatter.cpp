@@ -183,7 +183,7 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 
 	// формирование тела сообщения
 	for (int i = 0; i < list.count(); i++)
-        result += formatParsedBlock(list.at(i));
+		result += formatParsedBlock(list.at(i));
 
 	// хвост html
 	result += "</td></tr></table></td></tr>";
@@ -509,9 +509,10 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		else // невалидная ссылка
 			html = lstr;
 
-		result.replace(url1.cap(0), html);
+		QString match = url1.cap(0);
+		result.replace(match, html);
 
-		index += std::min(url1.matchedLength(), html.length());
+		index += url1.matchedLength() + match.length() - html.length();
 	}
 
 	index = 0;
@@ -537,9 +538,10 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		else // невалидная ссылка
 			html = rstr + " (" + lstr + ")";
 
-		result.replace(url2.cap(0), html);
+		QString match = url2.cap(0);
+		result.replace(match, html);
 
-		index += std::min(url2.matchedLength(), html.length());
+		index += url2.matchedLength() + match.length() - html.length();
 	}
 
 	// ссылки без тэгов
@@ -552,15 +554,13 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		QString html;
 		QString lstr = url3.cap(1);
 		int     lval = AParser::isURL(lstr);
-
+		index += url3.matchedLength();
 		if (lval == 1)
 		{
 			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
 			result.replace(lstr, html);
-			index += std::min(url3.matchedLength(), html.length());
+			index += html.length() - lstr.length();
 		}
-		else // невалидная или опасная ссылка
-			index += url3.matchedLength();
 	}
 
 	// email url
