@@ -253,7 +253,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			}
 
 			// получение тэга
-			QString tag = data.mid(pos1, pos2 - pos1 + 1).toLower();
+			QString tag = data.mid(pos1, pos2 - pos1 + 1);
 
 			current_quote.Data += data.mid(0, pos1);
 			data.remove(0, pos2 + 1);
@@ -276,7 +276,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			{
 				// поиск открывающего тэга
 				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == strong_tags[i].OpenPart)
+					if (QString::compare(tag, strong_tags[i].OpenPart, Qt::CaseInsensitive) == 0)
 					{
 						found_tag = &strong_tags[i];
 						break;
@@ -286,7 +286,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			{
 				// поиск закрывающего тэга
 				for (size_t i = 0; i < sizeof(strong_tags) / sizeof(AStrongTag); i++)
-					if (tag == strong_tags[i].ClosePart && strong_tags[i].Type == current_block.Type)
+					if (QString::compare(tag, strong_tags[i].ClosePart, Qt::CaseInsensitive) == 0 && strong_tags[i].Type == current_block.Type)
 					{
 						found_tag = &strong_tags[i];
 						break;
@@ -322,9 +322,9 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 			// найден простой немонолитный тэг
 			if (found_tag == NULL)
 			{
-				if (tag == "[strike]")
+				if (QString::compare(tag, "[strike]", Qt::CaseInsensitive) == 0)
 					tag = "[s]";
-				else if (tag == "[/strike]")
+				else if (QString::compare(tag, "[/strike]", Qt::CaseInsensitive) == 0)
 					tag = "[/s]";
 
 				current_quote.Data += tag;
