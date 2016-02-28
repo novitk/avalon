@@ -3,7 +3,7 @@
 pkgname=('avalon')
 pkgver=1.0.442
 pkgrel=1
-pkgdesc=("RSDN offline client")
+pkgdesc="RSDN offline client"
 arch=('i686' 'x86_64')
 url="https://github.com/rsdn/${pkgname}"
 license=('BSD')
