@@ -69,5 +69,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Thu Mar 24 2014 Anton Batenev <antonbatenev@yandex.ru> 1.0.443-1
+* Thu Mar 24 2016 Anton Batenev <antonbatenev@yandex.ru> 1.0.443-1
 - Initial RPM release
