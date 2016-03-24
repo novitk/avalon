@@ -10,7 +10,7 @@
 * [Fedora, openSUSE, CentOS](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Ubuntu PPA](https://launchpad.net/~abbat/+archive/ubuntu/avalon) - `ppa:abbat/avalon`
 * [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon), [Arch AUR](https://aur.archlinux.org/packages/avalon/) (см. так же [AUR Helpers](https://wiki.archlinux.org/index.php/AUR_Helpers_(Русский)))
-* Windows: [avalon_1.0_win32_r442.zip](https://yadi.sk/d/8gpACnzAdxMr3) (30.5MB)
+* [Windows](https://yadi.sk/d/W9kZi-GLqTN7G)
 
 # Настройка highlight.js
 
