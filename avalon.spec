@@ -4,7 +4,7 @@ Release:       1
 Summary:       RSDN offline client
 Group:         Applications/Internet
 License:       BSD-2-clause
-URL:           https://github.com/rsdn/avalon
+URL:           https://github.com/abbat/avalon
 Requires:      libqt4 >= 4.4, aspell, zlib
 BuildRequires: libqt4-devel >= 4.4, aspell-devel, zlib-devel
 
