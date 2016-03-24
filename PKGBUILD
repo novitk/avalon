@@ -1,7 +1,7 @@
 # Maintainer: Anton Batenev <antonbatenev@yandex.ru>
 
 pkgname=('avalon')
-pkgver=1.0.443
+pkgver=2.0.1
 pkgrel=1
 pkgdesc="RSDN offline client"
 arch=('i686' 'x86_64')
