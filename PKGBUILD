@@ -54,8 +54,6 @@ package() {
     install -D -m644 "${srcdir}/${pkgname}/${pkgname}.desktop"        "${pkgdir}/usr/share/applications/${pkgname}.desktop"
     install -D -m644 "${srcdir}/${pkgname}/src/icons/${pkgname}.xpm"  "${pkgdir}/usr/share/pixmaps/${pkgname}.xpm"
     install -D -m644 "${srcdir}/${pkgname}/README.md"                 "${pkgdir}/usr/share/doc/${pkgname}/README.md"
-    install -D -m644 "${srcdir}/${pkgname}/src/sql/avalon.mysql.sql"  "${pkgdir}/usr/share/doc/${pkgname}/avalon.mysql.sql"
-    install -D -m644 "${srcdir}/${pkgname}/src/sql/avalon.sqlite.sql" "${pkgdir}/usr/share/doc/${pkgname}/avalon.sqlite.sql"
     install -D -m644 "${srcdir}/${pkgname}/debian/copyright"          "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
     ln -s "/usr/bin/${pkgname}-qt${QT_SELECT}" "${pkgdir}/usr/bin/${pkgname}"
