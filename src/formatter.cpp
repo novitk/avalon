@@ -188,17 +188,6 @@ QString AFormatter::footerHTML ()
 {
 	QString result =
 		"	<div id='footer'></div>\n"
-
-		// Web Of Trust (experemental)
-		// http://www.mywot.com/en/blog/adding-ratings-to-your-website
-		// http://www.mywot.com/wiki/API
-		"	<script type='text/javascript'>\n"
-		"		var wot_rating_options = {\n"
-		"			exclude: /^(.+\\.){0,1}(rsdn\\.ru|yandex\\.ru|google\\.com|youtube\\.com|github\\.com|wikipedia\\.org)$/i\n"
-		"		};\n"
-		"	</script>\n"
-		"	<script type='text/javascript' src='http://api.mywot.com/widgets/ratings.js'></script>\n"
-
 		"</body>\n"
 		"</html>\n";
 
