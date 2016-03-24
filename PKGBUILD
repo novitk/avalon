@@ -5,14 +5,14 @@ pkgver=1.0.444
 pkgrel=1
 pkgdesc="RSDN offline client"
 arch=('i686' 'x86_64')
-url="https://github.com/rsdn/${pkgname}"
+url="https://github.com/abbat/${pkgname}"
 license=('BSD')
-makedepends=('qt5-base' 'qt5-webkit' 'aspell' 'zlib' 'git')
+makedepends=('qt4' 'qtwebkit' 'qtchooser' 'aspell' 'zlib' 'git')
 optdepends=('aspell-ru: Russian dictionary for aspell' 'aspell-en: English dictionary for aspell')
-source=("git+https://github.com/abbat/${pkgname}.git")
+source=("https://build.opensuse.org/source/home:antonbatenev:${pkgname}/${pkgname}/${pkgname}_${pkgver}.tar.bz2")
 sha256sums=('SKIP')
 
-export QT_SELECT=5
+export QT_SELECT=4
 
 build() {
     project_file="${pkgname}.pro"
@@ -54,6 +54,8 @@ package() {
     install -D -m644 "${srcdir}/${pkgname}/${pkgname}.desktop"        "${pkgdir}/usr/share/applications/${pkgname}.desktop"
     install -D -m644 "${srcdir}/${pkgname}/src/icons/${pkgname}.xpm"  "${pkgdir}/usr/share/pixmaps/${pkgname}.xpm"
     install -D -m644 "${srcdir}/${pkgname}/README.md"                 "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+    install -D -m644 "${srcdir}/${pkgname}/src/sql/avalon.mysql.sql"  "${pkgdir}/usr/share/doc/${pkgname}/avalon.mysql.sql"
+    install -D -m644 "${srcdir}/${pkgname}/src/sql/avalon.sqlite.sql" "${pkgdir}/usr/share/doc/${pkgname}/avalon.sqlite.sql"
     install -D -m644 "${srcdir}/${pkgname}/debian/copyright"          "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 
     ln -s "/usr/bin/${pkgname}-qt${QT_SELECT}" "${pkgdir}/usr/bin/${pkgname}"
