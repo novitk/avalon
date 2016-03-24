@@ -9,6 +9,6 @@
 /*!
  * \brief Номер билда
  */
-#define AVALON_BUILD 442
+#define AVALON_BUILD 443
 
 #endif   // _avalon_version_h_
