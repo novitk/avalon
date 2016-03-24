@@ -9,7 +9,7 @@
 * [Debian, Ubuntu](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Fedora, openSUSE, CentOS](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Ubuntu PPA](https://launchpad.net/~abbat/+archive/ubuntu/avalon) - `ppa:abbat/avalon`
-* [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon), [Arch AUR](https://aur.archlinux.org/packages/avalon/) (см. так же [AUR Helpers](https://wiki.archlinux.org/index.php/AUR_Helpers_(Русский)))
+* [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Windows](https://yadi.sk/d/W9kZi-GLqTN7G)
 
 # FAQ
