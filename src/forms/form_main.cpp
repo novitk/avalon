@@ -670,7 +670,7 @@ void AFormMain::menu_q_about_triggered ()
 {
 	QString text = QString::fromUtf8(
 		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='https://rsdn.ru'>rsdn</a> аналогичный проекту <a href='https://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
-		"<b>домашняя страница</b>: <a href='https://github.com/rsdn/avalon'>https://github.com/rsdn/avalon</a><br/><br/>"
+		"<b>домашняя страница</b>: <a href='https://github.com/abbat/avalon'>https://github.com/abbat/avalon</a><br/><br/>"
 		"<b>разработчики</b>:"
 		"<ul>"
 		"<li><a href='https://github.com/abbat'>Anton Batenev</a></li>"

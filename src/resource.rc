@@ -4,7 +4,7 @@ MAINICON ICON "icons/main.ico"
 
 VS_VERSION_INFO VERSIONINFO
     PRODUCTVERSION 1,0,0,0
-    FILEVERSION 1,0,443,0
+    FILEVERSION 1,0,444,0
     FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
     FILEFLAGS 0x1L
@@ -20,8 +20,8 @@ BEGIN
         BLOCK "041904b0"
         BEGIN
             VALUE "ProductName", "avalon"
-            VALUE "ProductVersion", "1.0.0.0"
-            VALUE "FileVersion", "1.0.443"
+            VALUE "ProductVersion", "1.0"
+            VALUE "FileVersion", "1.0.444"
             VALUE "FileDescription", "avalon 1.0"
             VALUE "InternalName", "avalon"
             VALUE "LegalCopyright", "2008-2016, Anton Batenev, RSDN team"

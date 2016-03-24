@@ -21,7 +21,7 @@ QString getVersionString ()
 
 QString getAgentString ()
 {
-	return QString("avalon/") + getVersionString() + " (https://github.com/rsdn/avalon)";
+	return QString("avalon/") + getVersionString() + " (https://github.com/abbat/avalon)";
 }
 //----------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ QString getTagline ()
 
 	QString tagline = settings.value("ui/tagline", "%%version%%").toString();
 
-	tagline = tagline.replace("%%version%%", "[url=https://github.com/rsdn/avalon/wiki]avalon/" + getVersionString() + "[/url]");
+	tagline = tagline.replace("%%version%%", "[url=https://github.com/abbat/avalon" + getVersionString() + "[/url]");
 
 	return tagline;
 }

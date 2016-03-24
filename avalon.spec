@@ -1,10 +1,10 @@
 Name:          avalon
-Version:       1.0.443
+Version:       1.0.444
 Release:       1
 Summary:       RSDN offline client
 Group:         Applications/Internet
 License:       BSD-2-clause
-URL:           https://github.com/rsdn/avalon
+URL:           https://github.com/abbat/avalon
 Requires:      libqt4 >= 4.4, aspell, zlib
 BuildRequires: libqt4-devel >= 4.4, aspell-devel, zlib-devel
 
@@ -69,5 +69,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Thu Mar 24 2016 Anton Batenev <antonbatenev@yandex.ru> 1.0.443-1
+* Fri Mar 25 2016 Anton Batenev <antonbatenev@yandex.ru> 1.0.444-1
 - Initial RPM release
