@@ -852,13 +852,37 @@ void AMessageTree::selection_changed ()
 	}
 
 	// отображение сообщения
-	bool special = m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND || m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS || m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND;
-	bool rated   = m_current_forum.Rated;
+	if (m_current_forum.IDGroup != SPECIAL_ID_GROUP)
+		m_message_view->setMessage(*info, &m_current_forum);
+	else if (m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_MY_MESSAGES   ||
+	         m_current_forum.ID == SPECIAL_ID_FORUM_ANSWERS_TO_ME)
+	{
+		// в спец-форумах типа "Ответы мне" короткое имя форума
+		// для формирования ссылки на сообщение неизвестно - получаем из хранилища
 
-	if (rated == true && info->IDUser == AGlobal::getInstance()->Me.ID)
-		rated = false;
+		// получение хранилища
+		std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
 
-	m_message_view->setMessage(*info, special, rated);
+		if (storage.get() == NULL)
+		{
+			QMessageBox::critical(m_parent, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
+			return;
+		}
+
+		// получение информации о форуме сообщения
+		AForumInfo forum;
+		if (storage->getForumInfo(info->IDForum, forum) == false)
+		{
+			storage->showError(m_parent);
+			return;
+		}
+
+		m_message_view->setMessage(*info, &forum);
+	}
+	else
+		m_message_view->setMessage(*info);
 
 	// взвод таймера для пометки как прочитанного
 	if (info->IsRead == false)
@@ -1516,9 +1540,9 @@ void AMessageTree::processUrl (const QString& url)
 		external_url.replace("avalon:", "");
 
 		// проверка на то, что URL является ссылкой на сообщение RSDN
-		// TODO: дополнить регэксп на ссылку вида http://rsdn.ru/forum/Message.aspx?mid=3900833&only=1
-		// пример встречается по ссылке http://www.rsdn.ru/forum/unix/3901241.1.aspx
-		QRegExp rsdn_url("^(http://){0,1}((www|gzip)\\.){0,1}rsdn.ru/forum/.+/(\\d+)(\\.(1|flat|aspx)){0,1}", Qt::CaseInsensitive);
+		// TODO: дополнить регэксп на ссылку вида https://rsdn.ru/forum/Message.aspx?mid=3900833&only=1
+		// пример встречается по ссылке https://rsdn.ru/forum/unix/3901241.1
+		QRegExp rsdn_url("^(https?://){0,1}((www|gzip)\\.){0,1}rsdn.ru/forum/.+/(\\d+)(\\.(1|flat|aspx)){0,1}", Qt::CaseInsensitive);
 
 		if (rsdn_url.indexIn(external_url) == -1)
 			QDesktopServices::openUrl(external_url);
@@ -1648,7 +1672,7 @@ void AMessageTree::gotoNextUnreadArticle (QTreeWidgetItem* current_item)
 	bool loopback = false;
 
 	// есть выделение или найден топик с непрочитанными сообщениями
-	while (true)
+	while (info != NULL)
 	{
 		if (info->HasUnreadChild == true && info->IsChildLoaded == false)
 			item->setExpanded(true);

@@ -299,7 +299,7 @@ QString AWebservice::getUserList_WebserviceParse (const QString& data, AUserInfo
 
 	// проверка ошибок получения версий строк
 	// подавлять ошибки сбросом в значение по умолчанию ("AAAAAAAAAAA=") оказалось неправильно
-	// подробнее см. http://www.rsdn.ru/forum/janus/3449147.1.aspx
+	// подробнее см. https://rsdn.ru/forum/janus/3449147.1
 	if (row_version.length() == 0)
 		return QString::fromUtf8("В ответе вебсервиса не найдено поле <lastRowVersion>");
 
@@ -501,7 +501,7 @@ QString AWebservice::getMessageList_WebserviceParse (const QString& data, ADataL
 
 	// проверка ошибок получения версий строк
 	// подавлять ошибки сбросом в значение по умолчанию ("AAAAAAAAAAA=") оказалось неправильно
-	// подробнее см. http://www.rsdn.ru/forum/janus/3449147.1.aspx
+	// подробнее см. https://rsdn.ru/forum/janus/3449147.1
 	// выбрасывать ошибку (r253) тоже оказалось неправильно - для некоторых форумов не приходят ни рейтинги ни модерилки
 	if (lastRatingRowVersion.length() != 0)
 		row_version.Rating = lastRatingRowVersion;
@@ -793,13 +793,13 @@ QString AWebservice::postChangeCommit_WebserviceParse (const QString& data, ACom
 
 	QString moderate_exception_info = getNextBlock(&moderate_exceptions, "<ModerateExceptionInfo>", "</ModerateExceptionInfo>", seed);
 
-	while (rating_exception_info.length())
+	while (moderate_exception_info.length())
 	{
 		ACommitExceptionInfo info;
 
-		info.Exception = getTextBetween(&moderate_exception_info, "<exception>",     "</exception>");
-		info.ID        = getTextBetween(&moderate_exception_info, "<localRatingId>", "</localRatingId>").toInt();
-		info.Info      = getTextBetween(&moderate_exception_info, "<info>",          "</info>");
+		info.Exception = getTextBetween(&moderate_exception_info, "<ExceptionMessage>", "</ExceptionMessage>");
+		info.ID        = getTextBetween(&moderate_exception_info, "<LocalModerateId>",  "</LocalModerateId>").toInt();
+		info.Info      = getTextBetween(&moderate_exception_info, "<Info>",             "</Info>");
 
 		commit_info.MessagesExceptions.append(info);
 

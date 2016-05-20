@@ -3,11 +3,46 @@
 #include "global.h"
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bool rated, const AMessageRatingList* rating_list)
+QString AFormatter::headHTML ()
 {
-	// парсинг сообщения
-	AParsedBlockList list = AParser::parseBlocks(message.Message);
+#ifndef AVALON_PACKAGE
+	QString path = QCoreApplication::applicationDirPath();
+#else
+	QString path = QDir::homePath() + "/.avalon";
+#endif
 
+	QString custom_css;
+	if (QFileInfo(path + "/avalon.css").exists() == true)
+#ifdef Q_WS_WIN
+		custom_css = "	<link rel='stylesheet' href='file:///" + path + "/avalon.css' type='text/css' media='screen' />\n";
+#else
+		custom_css = "	<link rel='stylesheet' href='file://" + path + "/avalon.css' type='text/css' media='screen' />\n";
+#endif
+
+	QString result =
+		"<!DOCTYPE html>\n"
+		"<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+		"<head>\n"
+		"	<meta charset='utf-8' />\n"
+		"	<link rel='stylesheet' href='qrc:/style.css' type='text/css' media='screen' />\n"
+		+ custom_css +
+#ifdef Q_WS_WIN
+		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css' />\n"
+		"	<script src='file:///" + path + "/highlight/highlight.pack.js'></script>\n"
+#else
+		"	<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css' />\n"
+		"	<script src='file://" + path + "/highlight/highlight.pack.js'></script>\n"
+#endif
+		"	<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>\n"
+		"</head>\n"
+		"<body>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::subjectHTML (const AMessageInfo& message, const AForumInfo* forum)
+{
 	// тема письма хранится без html замен
 	QString subject = message.Subject;
 
@@ -15,225 +50,256 @@ QString AFormatter::formatMessage (const AMessageInfo& message, bool special, bo
 	subject.replace("<", "&lt;");
 	subject.replace(">", "&gt;");
 
-	//
-	// формирование html
-	//
+	QString pad    = "			";
+	QString result = pad + "<div id='title'>\n";
 
-	QString result;
-
-	result += "<html>";
-	result += "<head>";
-	result += "<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>";
-
-	// подключение highlight.js
-	QString path = QCoreApplication::applicationDirPath();
-
-	#if QT_VERSION >= 0x040500
-	result += "<style type='text/css'>pre { font-family: 'Courier New', courier; font-size: 11pt; }</style>";
-	#endif
-
-	#ifdef Q_WS_WIN
-		result += "<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css'>";
-		result += "<script src='file:///" + path + "/highlight/highlight.pack.js'></script>";
-	#else
-		result += "<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css'>";
-		result += "<script src='file://" + path + "/highlight/highlight.pack.js'></script>";
-	#endif
-
-	result += "<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>";
-	result += "<style type='text/css'>table { font-size: 11pt; }</style>";
-	result += "</head>";
-
-	// тело html
-	result += "<body topmargin='0' leftmargin='0' rightmargin='0' bottommargin='0'>";
-	result += "<table width='100%' cellpadding='1' cellspacing='0' border='0'>";
-	result += "<tr style='background-color: #E6F2E6' valign='center'>";
-
-	// тема сообщения + ссылка на сообщение на сайте
-	result += "<td><a href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".aspx'>" + QString::fromUtf8("<img src='qrc:/icons/show_topic.png' title='показать положение в теме' alt='показать положение в теме'>") + "</a><b>&nbsp;";
-
-	if (message.ID != 0 && special == false)
-		result += "<a style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/message/" + QString::number(message.ID) + ".1.aspx'>" + subject + "</a>";
+	if (forum != NULL)
+	{
+		result +=
+			pad + "	<a id='move_to_thread' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
+			pad + "	<a id='subject' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + subject + "</a>\n";
+	}
 	else
-		result += subject;
+		result += pad + "<p id='subject'>" + subject + "</p>\n";
 
-	result += "</b></td>";
+	result += pad + "</div>\n";
 
-	// иконки для выставления оценок
-	result += "<td align='right'>";
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::rateHTML (bool rated, bool moderated)
+{
+	QString pad = "				";
+	QString result = pad + "<div id='rate'>\n";
 
 	if (rated == true)
 	{
-		result += "<a href='avalon:rate_plus_1'><img src='qrc:/icons/rate_plus_1.png' title='+1' alt='+1'></a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_1'>" + QString::fromUtf8("<img src='qrc:/icons/rate_1.png' title='интересно' alt='интересно'>") + "</a>";
-		result += "<a href='avalon:rate_2'>" + QString::fromUtf8("<img src='qrc:/icons/rate_2.png' title='спасибо' alt='спасибо'>") + "</a>";
-		result += "<a href='avalon:rate_3'>" + QString::fromUtf8("<img src='qrc:/icons/rate_3.png' title='супер' alt='супер'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_cross'>" + QString::fromUtf8("<img src='qrc:/icons/rate_cross.png' title='удалить оценку' alt='удалить оценку'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_smile'>" + QString::fromUtf8("<img src='qrc:/icons/rate_smile.png' title='смешно' alt='смешно'>") + "</a>";
-		result += "&nbsp;&nbsp;";
-		result += "<a href='avalon:rate_plus'>" + QString::fromUtf8("<img src='qrc:/icons/rate_plus.png' title='согласен' alt='согласен'>") + "</a>";
-		result += "<a href='avalon:rate_minus'>" + QString::fromUtf8("<img src='qrc:/icons/rate_minus.png' title='не согласен' alt='не согласен'>") + "</a>";
-		result += "&nbsp;&nbsp;";
+		result +=
+			pad + QString::fromUtf8("<a id='rate_plus_1' href='avalon:rate_plus_1'><img src='qrc:/icons/rate_plus_1.png' title='+1' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_1' href='avalon:rate_1'><img src='qrc:/icons/rate_1.png' title='интересно' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_2' href='avalon:rate_2'><img src='qrc:/icons/rate_2.png' title='спасибо' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_3' href='avalon:rate_3'><img src='qrc:/icons/rate_3.png' title='супер' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_cross' href='avalon:rate_cross'><img src='qrc:/icons/rate_cross.png' title='удалить оценку' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_smile' href='avalon:rate_smile'><img src='qrc:/icons/rate_smile.png' title='смешно' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_plus' href='avalon:rate_plus'><img src='qrc:/icons/rate_plus.png' title='согласен' /></a>\n") +
+			pad + QString::fromUtf8("<a id='rate_minus' href='avalon:rate_minus'><img src='qrc:/icons/rate_minus.png' title='не согласен' /></a>\n");
 	}
 
-	if (special == false)
-		result += "<a href='avalon:moderate'>" + QString::fromUtf8("<img src='qrc:/icons/moderate.png' title='модерирование' alt='модерирование'>") + "</a>";
+	if (moderated == true)
+		result += pad + QString::fromUtf8("<a id='moderate' href='avalon:moderate'><img src='qrc:/icons/moderate.png' title='модерирование' /></a>\n");
 
-	result += "&nbsp;&nbsp;";
-	result += "</td></tr>";
+	result += pad + "</div>\n";
 
-	// имя пользователя + ссылка на профиль
-	if (message.IDUser == 0 || message.IDUser == -1)
-	{
-		if (message.UserNick.length() > 0)
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + message.UserNick + "</td></tr>";
-		else
-			result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + QString::fromUtf8("Аноним") + "</td></tr>";
-	}
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::authorHTML (int id, const QString nick)
+{
+	QString pad = "			";
+	QString result;
+
+	if (id == 0 || id == -1)
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'>") + nick + "</div><br />\n";
 	else
-		result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("От:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b><a href='http://www.rsdn.ru/Users/" + QString::number(message.IDUser) + ".aspx'>" + message.UserNick + "</a></td></tr>";
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='https://rsdn.ru/account/info/") + QString::number(id) + "'>" + nick + "</a></div><br />\n";
 
-	result += "<tr style='background-color: #FFFFF6'><td colspan='2'><b>&nbsp;" + QString::fromUtf8("Дата:") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>" + message.MessageDate.toString("dd.MM.yyyy HH:mm") + "</td></tr>";
+	return result;
+}
+//----------------------------------------------------------------------------------------------
 
-	// формирование строки рейтинга сообщения
-	if (rating_list != NULL && rating_list->count() > 0)
+QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
+{
+	if (rating_list == NULL || rating_list->count() == 0)
+		return "";
+
+	QString result = "";
+
+	int rate_funny = 0;
+	int rate_thanks = 0;
+	int rate_thanks_count = 0;
+	int rate_agree = 0;
+	int rate_disagree = 0;
+
+	QString rate_details[7];
+	for (int i = 0; i < rating_list->count(); i++)
 	{
-		int rate_funny = 0;
-		int rate_thanks = 0;
-		int rate_thanks_count = 0;
-		int rate_agree = 0;
-		int rate_disagree = 0;
-
-		QString rate_details[7];
-		for (int i = 0; i < rating_list->count(); i++)
+		AMessageRating info = rating_list->at(i);
+		int detailIdx=-1;
+		switch(info.Rate)
 		{
-			AMessageRating info = rating_list->at(i);
-			int detailIdx=-1;
-			switch(info.Rate)
-			{
-			case 1:
-				rate_thanks += info.UserRating;
-				rate_thanks_count++;
-				detailIdx=0;
-				break;
-			case 2:
-				rate_thanks += 2 * info.UserRating;
-				rate_thanks_count++;
-				detailIdx=1;
-				break;
-			case 3:
-				rate_thanks += 3 * info.UserRating;
-				rate_thanks_count++;
-				detailIdx=2;
-				break;
-			case 0:
-				rate_disagree++;
-				detailIdx=3;
-				break;
-			case -2:
-				rate_funny++;
-				detailIdx=4;
-				break;
-			case -3:
-				rate_thanks++;
-				rate_thanks_count++;
-				detailIdx=5;
-				break;
-			case -4:
-				rate_agree++;
-				detailIdx=6;
-				break;
-			}
-			static const QString rateText[] = {"[1]", "[2]", "[3]", "[-]", ":)", "[+1]", "[+]"};
-			if(detailIdx >= 0)
-				rate_details[detailIdx] += rateText[detailIdx] + (info.Nick.isEmpty() ? info.Name : info.Nick) + " ";
+		case 1:
+			rate_thanks += info.UserRating;
+			rate_thanks_count++;
+			detailIdx=0;
+			break;
+		case 2:
+			rate_thanks += 2 * info.UserRating;
+			rate_thanks_count++;
+			detailIdx=1;
+			break;
+		case 3:
+			rate_thanks += 3 * info.UserRating;
+			rate_thanks_count++;
+			detailIdx=2;
+			break;
+		case 0:
+			rate_disagree++;
+			detailIdx=3;
+			break;
+		case -2:
+			rate_funny++;
+			detailIdx=4;
+			break;
+		case -3:
+			rate_thanks++;
+			rate_thanks_count++;
+			detailIdx=5;
+			break;
+		case -4:
+			rate_agree++;
+			detailIdx=6;
+			break;
 		}
-		QString all_rate_details =
-				rate_details[5]
-				+ rate_details[0]
-				+ rate_details[1]
-				+ rate_details[2]
-				+ rate_details[3]
-				+ rate_details[6]
-				+ rate_details[4]
-				;
-
-		result += "<tr style='background-color: #FFFFF6'><td colspan='2'><a title='"+all_rate_details+"' style='color: black; text-decoration: none;' href='http://www.rsdn.ru/forum/RateList.aspx?mid=" + QString::number(message.ID) + QString::fromUtf8("'><b>&nbsp;Оценки:") + "&nbsp;&nbsp;</b>";
-
-		if (rate_thanks > 0)
-			result += QString::number(rate_thanks) + " (" + QString::number(rate_thanks_count) + ") ";
-		if (rate_agree > 0)
-			result += QString::fromUtf8("+") + QString::number(rate_agree) + " ";
-		if (rate_disagree > 0)
-			result += QString::fromUtf8("-") + QString::number(rate_disagree) + " ";
-		for(int i=0; i<rate_funny/3; ++i)
-			result += QString::fromUtf8("<img src='qrc:/smiles/biggrin.png' align='top' alt=':)))'>");
-		if(rate_funny % 3 == 2)
-			result += QString::fromUtf8("<img src='qrc:/smiles/grin.png' align='top' alt=':))'>");
-		if(rate_funny % 3 == 1)
-			result += QString::fromUtf8("<img src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
-
-		result += "</a></td></tr>";
+		static const QString rateText[] = {"[1]", "[2]", "[3]", "[-]", ":)", "[+1]", "[+]"};
+		if(detailIdx >= 0)
+			rate_details[detailIdx] += rateText[detailIdx] + (info.Nick.isEmpty() ? info.Name : info.Nick) + " ";
 	}
+	QString all_rate_details =
+			rate_details[5]
+			+ rate_details[0]
+			+ rate_details[1]
+			+ rate_details[2]
+			+ rate_details[3]
+			+ rate_details[6]
+			+ rate_details[4]
+			;
 
-	result += "</table>";
+	QString pad = "			";
+
+	result +=
+		pad + "<div class='info_left'><a id='rating' title='"+all_rate_details+"' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + QString::fromUtf8("'>Оценки</a>:</div>\n") +
+		pad + "<div class='info_right'>\n";
+
+	if (rate_thanks > 0)
+		result += pad + QString::number(rate_thanks) + " (" + QString::number(rate_thanks_count) + ") ";
+	if (rate_agree > 0)
+		result += pad + QString::fromUtf8("+") + QString::number(rate_agree) + " ";
+	if (rate_disagree > 0)
+		result += pad + QString::fromUtf8("-") + QString::number(rate_disagree) + " ";
+	for(int i=0; i<rate_funny/3; ++i)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/biggrin.png' align='top' alt=':)))'>");
+	if(rate_funny % 3 == 2)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/grin.png' align='top' alt=':))'>");
+	if(rate_funny % 3 == 1)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
+
+	result += pad + "</div><br />\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::footerHTML ()
+{
+	QString result =
+		"	<div id='footer'></div>\n"
+		"</body>\n"
+		"</html>\n";
+
+	return result;
+}
+//----------------------------------------------------------------------------------------------
+
+QString AFormatter::formatMessage (const AMessageInfo& message, const AForumInfo* forum, bool rated, const AMessageRatingList* rating_list)
+{
+	Q_ASSERT(forum != NULL && forum->IDGroup == SPECIAL_ID_GROUP);
+
+	// парсинг сообщения
+	AParsedBlockList list = AParser::parseBlocks(message.Message);
+
+	// шапка html
+	QString result = headHTML() +
+	"	<div id='message'>\n"
+	"		<div id='header'>\n";
+
+	// заголовок
+	result += subjectHTML(message, forum);
+
+	// иконки для выставления оценок
+	result += rateHTML(rated, forum != NULL);
+
+	// закрытие div.id = header
+	result +=
+	"		</div>\n"
+	"		<div id='info'>\n";
+
+	// автор сообщения + ссылка на профиль
+	result += authorHTML(message.IDUser, message.UserNick.length() > 0 ? message.UserNick : QString::fromUtf8("Аноним"));
+
+	// дата сообщения
+	result += QString::fromUtf8("			<div class='info_left'>Дата:</div><div class='info_right'>") + message.MessageDate.toString("dd.MM.yyyy HH:mm") + "</div><br />\n";
+
+	// рейтинг сообщения
+	result += ratingHTML(message.ID, rating_list);
+
+	// закрытие div.id = info
+	result += "		</div>\n";
 
 	// формирование тела сообщения
+	result += "		<div id='text'>\n";
+
 	for (int i = 0; i < list.count(); i++)
 		result += formatParsedBlock(list.at(i));
 
+	result += "		</div>\n";
+
+	// закрытие div.id = message
+	result += "	</div>\n";
+
 	// хвост html
-	result += "</td></tr></table></td></tr>";
-
-	result += "</table>";
-	result += "<div style='background-color: #E6F2E6; width=100%'>&nbsp;</div>";
-	result += "</body>";
-	result += "</html>";
-
+	result += footerHTML();
 	return result;
 }
 //----------------------------------------------------------------------------------------------
 
 QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 {
+	QString pad = "			";
 	QString result;
 
 	if (block.Type == pbtText)
 	{
-		result += "<p style='padding:0 .25em'>";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</p>";
 	}
 
 	else if (block.Type == pbtQuote)
 	{
-		result += "<table style='background-color: #FFFFE0;' width='98%' align='center'><tr><td>";
+		result += pad + "<blockquote>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</td></tr></table><br />";
+		result += pad + "</blockquote>\n";
 	}
 
 	else if (block.Type == pbtModerator)
 	{
-		result += "<table style='background-color: #FFC0C0;' width='100%'><tr><td>";
+		result += pad + "<div class='moderator'>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</td></tr></table>";
+		result += pad + "</div>\n";
 	}
 
 	else if (block.Type == pbtTagline)
 	{
-		result += "<font color='#A52A2A' size=-1>";
+		result += pad + "<div class='tagline'>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</font><br />";
+		result += pad + "</div>\n";
 	}
 
 	else if (block.Type == pbtTable)
 	{
-		result += "<table align='center'>";
+		result += pad + "<table><tbody>\n";
 		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
-		result += "</table><br />";
+		result += pad + "</tbody></table>\n";
 	}
 
 	else if (block.Type == pbtCut)
@@ -298,57 +364,58 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 			map++;
 		}
 
-		result += "<table width='98%' align='center'><tr><td><pre>";
-
 		if (code_class.length() > 0)
-			result += "<code class='" + code_class + "'>";
+			result += pad + "<pre><code class='" + code_class + "'>";
 		else
-			result += "<code>";
+			result += pad + "<pre><code>";
 
-		result += formatQuotedStringList(block.Strings, block.Type, block.SubType) + "</code>";
-		result += "</pre></tr></td></table>";
+		result += formatQuotedStringList(block.Strings, block.Type, block.SubType);
+
+		result += "</code></pre>\n";
 	}
 
 	return result;
 }
 //----------------------------------------------------------------------------------------------
 
-QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType /*type*/, AParsedBlockSubType sub_type)
+QString AFormatter::formatQuotedStringList (const AQuotedStringList& list, AParsedBlockType type, AParsedBlockSubType sub_type)
 {
 	QString result;
 
-	int last_quote_level = -1;
+	int count = list.count();
 
-	for (int i = 0; i < list.count(); i++)
+	for (int i = 0; i < count; i++)
 	{
 		AQuotedString string = list.at(i);
 
-		QString line = string.QuoteText + " " + string.Data;
+		QString line = string.Data;
 
-		if (sub_type != pbstSourceCode)
+		if (string.QuoteText.length() > 0)
+			line = string.QuoteText + " " + line;
+
+		if (type != pbtTable && sub_type != pbstSourceCode)
 		{
-			// дополнительная пустая строка между квотами разного уровня, если она не была вставлена автором сообщения
-			if (i != 0 && string.QuoteLevel != last_quote_level && list.at(i - 1).Data.length() != 0)
-				result += "<br>";
+			QString pad = "			";
 
 			if (string.QuoteLevel != 0)
 			{
 				if (string.QuoteLevel % 3 == 0)
-					result += "<font color=darkblue>" + line + "</font>";
+					result += pad + "<p class='quote_blue'> " + line + " </p>\n";
 				else if (string.QuoteLevel % 2 == 0)
-					result += "<font color=darkred>" + line + "</font>";
+					result += pad + "<p class='quote_red'> " + line + " </p>\n";
 				else
-					result += "<font color=darkgreen>" + line + "</font>";
+					result += pad + "<p class='quote_green'> " + line + " </p>\n";
 			}
 			else
-				result += line;
-
-			result += "<br>";
-
-			last_quote_level = string.QuoteLevel;
+				result += pad + "<p class='quote_black'> " + line + " </p>\n";
 		}
 		else
-			result += line + "<br>";
+		{
+			if (i != count - 1)
+				result += line + "\n";
+			else
+				result += line;
+		}
 	}
 
 	if (sub_type != pbstSourceCode)
@@ -384,9 +451,9 @@ QString AFormatter::formatSimpleText (const QString& text)
 		{ "[/tr]",     "</tr>"     },
 		{ "[td]",      "<td>"      },
 		{ "[/td]",     "</td>"     },
-		{ "[th]",      "<td align='center' style='background-color: #DCDCDC;'>" },
-		{ "[/th]",     "</td>"     },
-		{ "[hr]",      "<hr>"      },
+		{ "[th]",      "<th>"      },
+		{ "[/th]",     "</th>"     },
+		{ "[hr]",      "<hr />"    },
 		{ "[h1]",      "<h1>"      },
 		{ "[/h1]",     "</h1>"     },
 		{ "[h2]",      "<h2>"      },
@@ -399,7 +466,7 @@ QString AFormatter::formatSimpleText (const QString& text)
 		{ "[/h5]",     "</h5>"     },
 		{ "[h6]",      "<h6>"      },
 		{ "[/h6]",     "</h6>"     },
-		{ "[*]",       "<li />"    },
+		{ "[*]",       "<li>"      },
 		{ ":)))",      "<img src='qrc:/smiles/sideways.png'>"   },
 		{ ":))",       "<img src='qrc:/smiles/biggrin.png'>"    },
 		{ ":)",        "<img src='qrc:/smiles/smile.png'>"      },
@@ -442,9 +509,9 @@ QString AFormatter::formatSimpleText (const QString& text)
 		int     lval = AParser::isURL(lstr);
 
 		if (lval == 1)
-			html = QString::fromUtf8("<p align='center'><img src='") + lstr + "'></p>";
-		else if (lval == 2)
-			html = QString::fromUtf8("<font color='red'>") + lstr + "</font>";
+			html = "<center><img src='" + lstr + "'></center>";
+		else if (lval == 2) // опасная ссылка
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = lstr;
 
@@ -465,12 +532,14 @@ QString AFormatter::formatSimpleText (const QString& text)
 	list2.setMinimal(true);
 	list3.setMinimal(true);
 
-	result.replace(list1, "<ol type='1' start='1' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	result.replace(list2, "<ol type='a' style='margin-top:0; margin-bottom:0;'>\\1</ol>");
-	result.replace(list3, "<ul style='margin-top:0; margin-bottom:0;'>\\1</ul>");
+	result.replace(list1, "<ol type='1' start='1'>\\1</ol>");
+	result.replace(list2, "<ol type='a'>\\1</ol>");
+	result.replace(list3, "<ul>\\1</ul>");
 
 	// гиперссылки
 	result = formatHyperlinks(result);
+
+	result = "			" + result;
 
 	return result;
 }
@@ -496,8 +565,8 @@ QString AFormatter::formatHyperlinks (const QString& text)
 
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
-		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+		else if (lval == 2) // опасная ссылка
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = lstr;
 
@@ -520,13 +589,13 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		int rval = AParser::isURL(rstr);
 
 		if (lval == 1)
-			html = QString::fromUtf8("<a href='") + lstr + "'>" + rstr + "</a>";
+			html = "<a href='" + lstr + "'>" + rstr + "</a>";
 		else if (rval == 1)
-			html = QString::fromUtf8("<a href='") + rstr + "'>" + lstr + "</a>";
+			html = "<a href='" + rstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + rstr + "</font></a>";
+			html = "<span class='alert'>" + rstr + "</span>";
 		else if (rval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+			html = "<span class='alert'>" + lstr + "</span>";
 		else // невалидная ссылка
 			html = rstr + " (" + lstr + ")";
 
@@ -547,9 +616,10 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		QString lstr = url3.cap(1);
 		int     lval = AParser::isURL(lstr);
 		index += url3.matchedLength();
+		index += url3.matchedLength();
 		if (lval == 1)
 		{
-			html = QString::fromUtf8("<a href='") + lstr + "'>" + lstr + "</a>";
+			html = QString::fromUtf8("<a href='") + lstr + "'>" + QUrl::fromPercentEncoding(lstr.toUtf8()) + "</a>";
 			result.replace(lstr, html);
 			index += html.length() - lstr.length();
 		}
@@ -571,7 +641,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		if (lval == 1)
 			html = QString::fromUtf8("<a href='mailto:") + lstr + "'>" + lstr + "</a>";
 		else if (lval == 2)
-			html = QString::fromUtf8("<a href='security risk'><font color='red'>") + lstr + "</font></a>";
+			html = lstr;
 		else // невалидная ссылка
 			html = lstr;
 
@@ -603,7 +673,7 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 	data.replace(tagline,   "");
 	data.replace(moderator, "");
 
-	// удаляем img с даными вместо ссылки (например, см. http://www.rsdn.ru/forum/flame.comp/4077971.1.aspx)
+	// удаляем img с даными вместо ссылки (например, см. https://rsdn.ru/forum/flame.comp/4077971.1)
 	QRegExp img1("\\[img\\]data:(\\S+)\\[/img\\]", Qt::CaseInsensitive);
 	img1.setMinimal(true);
 	data.replace(img1, "");
@@ -613,10 +683,36 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 	img2.setMinimal(true);
 	data.replace(img2, QString::fromUtf8("[url=\\1]\\1[/url]"));
 
-	// укорачивание длинных ссылок (например, см. http://www.rsdn.ru/forum/web/4086359.1.aspx)
+	// укорачивание длинных ссылок (например, см. https://rsdn.ru/forum/web/4086359.1)
 	QRegExp url1("\\[url=data:(\\S+)\\](.+)\\[/url\\]", Qt::CaseInsensitive);
 	url1.setMinimal(true);
 	data.replace(url1, "[url=bad%20link]\\2[/url]");
+
+	// удаление тэга цитирования
+	QRegExp q1("(^|[^\\[])\\[q\\]", Qt::CaseInsensitive);
+	q1.setMinimal(true);
+	data.replace(q1, "\\1");
+
+	QRegExp q2("(^|[^\\[])\\[/q\\]", Qt::CaseInsensitive);
+	q2.setMinimal(true);
+	data.replace(q2, "\\1");
+
+	// удаление таблиц из цитирования
+	QRegExp table("(^|[^\\[])\\[t\\](.+)\\[/t\\]", Qt::CaseInsensitive);
+	table.setMinimal(true);
+	data.replace(table, "\\1");
+
+	// удаление тэгов [h1]..[h6] из цитирования
+	for (int i = 1; i < 7; i++)
+	{
+		QRegExp h1("(^|[^\\[])\\[h" + QString::number(i) + "\\]", Qt::CaseInsensitive);
+		h1.setMinimal(true);
+		data.replace(h1, "\\1");
+
+		QRegExp h2("(^|[^\\[])\\[/h" + QString::number(i) + "\\]", Qt::CaseInsensitive);
+		h2.setMinimal(true);
+		data.replace(h2, "\\1");
+	}
 
 	data = data.trimmed();
 

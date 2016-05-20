@@ -19,12 +19,12 @@ class AFormatter
 		/*!
 		 * \brief Форматтер HTML сообщения из текстового
 		 * \param message Дескриптор сообщения
-		 * \param special Флаг спец-форума
+		 * \param forum Дескриптор форума сообщения (не спец-форума)
 		 * \param rated Флаг того, что форум оценивается
 		 * \param rating_list Список рейтингов (если есть)
 		 * \return Строка с HTML кодом для отображения
 		 */
-		static QString formatMessage (const AMessageInfo& message, bool special = false, bool rated = false, const AMessageRatingList* rating_list = NULL);
+		static QString formatMessage (const AMessageInfo& message, const AForumInfo* forum = NULL, bool rated = false, const AMessageRatingList* rating_list = NULL);
 
 		/*!
 		 * \brief Нормализация тела сообщения - выправление криворукого квотинга, ссылок, приветствий
@@ -35,6 +35,50 @@ class AFormatter
 		static QString normalizeBody (const QString& body, const QString& nick);
 
 	private:
+
+		/*!
+		 * \brief Блок заголовочного html / head / body
+		 * \return Строка html для вставки
+		 */
+		static QString headHTML ();
+
+		/*!
+		 * \brief Блок темы сообщения
+		 * \param message Дескриптор сообщения
+		 * \param forum Дескриптор форума
+		 * \return Строка html для вставки
+		 */
+		static QString subjectHTML (const AMessageInfo& message, const AForumInfo* forum = NULL);
+
+		/*!
+		 * \brief Блок возможности выставлять оценки
+		 * \param rated Флаг генерации блока для выставления оценок
+		 * \param moderated Флаг генерации блока для модерилок
+		 * \return Строка html для вставки
+		 */
+		static QString rateHTML (bool rated, bool moderated);
+
+		/*!
+		 * \brief Блок информации об авторе сообщения
+		 * \param id ID пользователя
+		 * \param nick Ник пользователя
+		 * \return Строка html для вставки
+		 */
+		static QString authorHTML (int id, const QString nick);
+
+		/*!
+		 * \brief Блок поставленных оценок
+		 * \param id ID сообщения
+		 * \param rating_list Список оценок
+		 * \return Строка html для вставки
+		 */
+		static QString ratingHTML (int id, const AMessageRatingList* rating_list);
+
+		/*!
+		 * \brief Блок подвала html
+		 * \return Строка html для вставки
+		 */
+		static QString footerHTML ();
 
 		/*!
 		 * \brief Форматирование блока текста

@@ -5,6 +5,8 @@ AWebView::AWebView (QWidget* parent) : QWebView (parent)
 {
 	LinkHovered = false;
 
+	setPage(new AWebPage(this));
+
 	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
 	pageAction(QWebPage::OpenLink)->setVisible(false);
@@ -65,9 +67,6 @@ void AWebView::contextMenuEvent (QContextMenuEvent* event)
 		QAction* wikipedia = m_menu->addAction(QString::fromUtf8("Википедия"));
 		wikipedia->setIcon(QIcon(":/icons/wikipedia.ico"));
 
-		QAction* slovari_yandex = m_menu->addAction(QString::fromUtf8("Яндекс.Словари"));
-		slovari_yandex->setIcon(QIcon(":/icons/slovari.yandex.ico"));
-
 		QAction* google = m_menu->addAction(QString::fromUtf8("Google"));
 		google->setIcon(QIcon(":/icons/google.ico"));
 
@@ -79,7 +78,6 @@ void AWebView::contextMenuEvent (QContextMenuEvent* event)
 
 		connect(yandex,           SIGNAL(triggered()), this, SLOT(menu_yandex_triggered()));
 		connect(wikipedia,        SIGNAL(triggered()), this, SLOT(menu_wikipedia_triggered()));
-		connect(slovari_yandex,   SIGNAL(triggered()), this, SLOT(menu_slovari_yandex_triggered()));
 		connect(google,           SIGNAL(triggered()), this, SLOT(menu_google_triggered()));
 		connect(google_translate, SIGNAL(triggered()), this, SLOT(menu_google_translate_triggered()));
 		connect(rsdn,             SIGNAL(triggered()), this, SLOT(menu_rsdn_triggered()));
@@ -105,17 +103,7 @@ void AWebView::menu_wikipedia_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"http://ru.wikipedia.org/wiki/" + selected;
-
-	QDesktopServices::openUrl(url);
-}
-//----------------------------------------------------------------------------------------------
-
-void AWebView::menu_slovari_yandex_triggered ()
-{
-	QString selected = page()->selectedText();
-
-	QString url = (QString)"http://lingvo.yandex.ru/en?st_translate=on&text=" + selected;
+	QString url = (QString)"https://ru.wikipedia.org/wiki/" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -125,7 +113,7 @@ void AWebView::menu_google_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"http://www.google.ru/search?hl=ru&q=" + selected;
+	QString url = (QString)"https://www.google.ru/search?hl=ru&q=" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -145,9 +133,9 @@ void AWebView::menu_google_translate_triggered ()
 	QString url;
 
 	if (is_english >= selected.length() / 2)
-		url = (QString)"http://translate.google.com/#ru|en|" + selected;
+		url = (QString)"https://translate.google.com/#auto/ru/" + selected;
 	else
-		url = (QString)"http://translate.google.com/#auto|ru|" + selected;
+		url = (QString)"https://translate.google.com/#ru/en/" + selected;
 
 	QDesktopServices::openUrl(url);
 }
@@ -157,13 +145,7 @@ void AWebView::menu_rsdn_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	// в связи с тем, что криворукий поиск от siteMETA использует cp1251 percent encoding в запросе
-	// вместо utf8 percent encoding, как это реализовано в нормальных поисковых машинах,
-	// необходимо перекодировать запрос и сформировать понятный браузерам URL
-	QTextCodec* codec = QTextCodec::codecForName("Windows-1251");
-	QByteArray selected1251 = codec->fromUnicode(selected);
-
-	QUrl url = QUrl::fromEncoded(((QString)"http://img.meta.ua/rsdnsearch/?mode=rank&group=N&q=" + selected1251.toPercentEncoding().constData()).toLatin1());
+	QString url = (QString)"https://rsdn.ru/rsdnsearch?text=" + selected;
 
 	QDesktopServices::openUrl(url);
 }

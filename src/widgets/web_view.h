@@ -9,6 +9,20 @@
 #include "sysheaders.h"
 
 /*!
+ * \brief Cабклассинг QWebPage для установки User-Agent ресурсов, загружаемых из сообщений
+ */
+class AWebPage : public QWebPage
+{
+	public:
+
+		AWebPage(QObject* parent = NULL) : QWebPage(parent) {}
+
+	protected:
+
+		QString userAgentForUrl (const QUrl& /*url*/) const { return getAgentString(); }
+};
+
+/*!
  * \brief Cабклассинг QWebView для установки дефолтного поведения
  */
 class AWebView : public QWebView
@@ -42,12 +56,11 @@ class AWebView : public QWebView
 	private slots:
 
 		// меню
-		void menu_yandex_triggered ();           /*!< \brief Поиск Яндекс         */
-		void menu_wikipedia_triggered ();        /*!< \brief Поиск Википедии      */
-		void menu_slovari_yandex_triggered ();   /*!< \brief Поиск Яндекс.Словари */
-		void menu_google_triggered ();           /*!< \brief Поиск Google         */
-		void menu_google_translate_triggered (); /*!< \brief Переводчик Google    */
-		void menu_rsdn_triggered ();             /*!< \brief Поиск RSDN           */
+		void menu_yandex_triggered ();             /*!< \brief Поиск Яндекс      */
+		void menu_wikipedia_triggered ();          /*!< \brief Поиск Википедии   */
+		void menu_google_triggered ();             /*!< \brief Поиск Google      */
+		void menu_google_translate_triggered ();   /*!< \brief Переводчик Google */
+		void menu_rsdn_triggered ();               /*!< \brief Поиск RSDN        */
 };
 
 /*!

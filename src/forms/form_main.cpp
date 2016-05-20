@@ -63,21 +63,20 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	// меню "?"
 	//
 
-	connect(m_menu_q_yandex_url,         SIGNAL(triggered()), this, SLOT(menu_q_yandex_url_triggered()));
-	connect(m_menu_q_wikipedia_url,      SIGNAL(triggered()), this, SLOT(menu_q_wikipedia_url_triggered()));
-	connect(m_menu_q_google_url,         SIGNAL(triggered()), this, SLOT(menu_q_google_url_triggered()));
-	connect(m_menu_q_rsdn_url,           SIGNAL(triggered()), this, SLOT(menu_q_rsdn_url_triggered()));
-	connect(m_menu_q_update,             SIGNAL(triggered()), this, SLOT(menu_q_update_triggered()));
-	connect(m_menu_q_about,              SIGNAL(triggered()), this, SLOT(menu_q_about_triggered()));
+	connect(m_menu_q_yandex_url,    SIGNAL(triggered()), this, SLOT(menu_q_yandex_url_triggered()));
+	connect(m_menu_q_wikipedia_url, SIGNAL(triggered()), this, SLOT(menu_q_wikipedia_url_triggered()));
+	connect(m_menu_q_google_url,    SIGNAL(triggered()), this, SLOT(menu_q_google_url_triggered()));
+	connect(m_menu_q_rsdn_url,      SIGNAL(triggered()), this, SLOT(menu_q_rsdn_url_triggered()));
+	connect(m_menu_q_about,         SIGNAL(triggered()), this, SLOT(menu_q_about_triggered()));
 
 	//
 	// тулбар
 	//
 
-	connect(m_tool_bar_synchronize,  SIGNAL(triggered()), this, SLOT(menu_service_synchronize_triggered()));
-	connect(m_tool_bar_new_message,  SIGNAL(triggered()), this, SLOT(menu_service_new_message_triggered()));
-	connect(m_tool_bar_backward,     SIGNAL(triggered()), this, SLOT(tool_bar_backward_triggered()));
-	connect(m_tool_bar_forward,      SIGNAL(triggered()), this, SLOT(tool_bar_forward_triggered()));
+	connect(m_tool_bar_synchronize, SIGNAL(triggered()), this, SLOT(menu_service_synchronize_triggered()));
+	connect(m_tool_bar_new_message, SIGNAL(triggered()), this, SLOT(menu_service_new_message_triggered()));
+	connect(m_tool_bar_backward,    SIGNAL(triggered()), this, SLOT(tool_bar_backward_triggered()));
+	connect(m_tool_bar_forward,     SIGNAL(triggered()), this, SLOT(tool_bar_forward_triggered()));
 
 	// интерфейсы
 	m_forum_tree->setMainForm(this);
@@ -140,7 +139,7 @@ void AFormMain::menu_service_synchronize_triggered ()
 	// основные настройки
 	QSettings settings;
 
-	QString rsdn_host = settings.value("rsdn/host", "www.rsdn.ru").toString();
+	QString rsdn_host = settings.value("rsdn/host", "rsdn.ru").toString();
 	int     rsdn_port = settings.value("rsdn/port", "80").toInt();
 
 	// получение хранилища
@@ -651,27 +650,27 @@ void AFormMain::menu_q_yandex_url_triggered ()
 
 void AFormMain::menu_q_wikipedia_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://ru.wikipedia.org"));
+	QDesktopServices::openUrl(QString("https://ru.wikipedia.org"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_google_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://www.google.ru"));
+	QDesktopServices::openUrl(QString("https://www.google.ru"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_rsdn_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("http://www.rsdn.ru"));
+	QDesktopServices::openUrl(QString("https://rsdn.ru"));
 }
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_q_about_triggered ()
 {
 	QString text = QString::fromUtf8(
-		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='http://rsdn.ru'>rsdn</a> аналогичный проекту <a href='http://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
-		"<b>домашняя страница</b>: <a href='https://github.com/rsdn/avalon'>https://github.com/rsdn/avalon</a><br/><br/>"
+		"<b>avalon</b> - кросс-платформенный клиент для чтения форумов <a href='https://rsdn.ru'>rsdn</a> аналогичный проекту <a href='https://rsdn.ru/projects/janus/article/article.xml'>janus</a> команды rsdn под windows.<br/><br/>"
+		"<b>домашняя страница</b>: <a href='https://github.com/abbat/avalon'>https://github.com/abbat/avalon</a><br/><br/>"
 		"<b>разработчики</b>:"
 		"<ul>"
 		"<li><a href='https://github.com/abbat'>Anton Batenev</a></li>"
@@ -680,10 +679,11 @@ void AFormMain::menu_q_about_triggered ()
 		"<li><a href='http://stanishevskiy.moikrug.ru/'>std.denis</a></li>"
 		"<li><a href='http://ua-coder.blogspot.com/'>Anatoliy</a></li>"
 		"<li><a href='https://github.com/astavonin'>Alexander Stavonin</a></li>"
+		"<li><a href='https://github.com/kan-izh'>kan-izh</a></li>"
 		"</ul>"
 	);
 
-	QMessageBox::about(this, getAgentString(), text);
+	QMessageBox::about(this, "avalon/" + getVersionString(), text);
 }
 //----------------------------------------------------------------------------------------------
 
@@ -991,124 +991,5 @@ void AFormMain::setDefaultStatus ()
 int AFormMain::synchronizeInterval ()
 {
 	return QSettings().value("ui/synchronize_interval", "0").toUInt() * 1000 * 60;
-}
-//----------------------------------------------------------------------------------------------
-
-void AFormMain::menu_q_update_triggered ()
-{
-	checkUpdate();
-}
-//----------------------------------------------------------------------------------------------
-
-void AFormMain::checkUpdate ()
-{
-	//
-	// получение манифеста
-	//
-
-	QString header = "";
-	header += "GET /rsdn/avalon/master/update.txt HTTP/1.1\r\n";
-	header += "Host: raw.github.com\r\n";
-	header += "Connection: close\r\n";
-	header += "User-Agent: " + getAgentString() + "\r\n";
-
-	#ifdef AVALON_USE_ZLIB
-	header += "Accept-Encoding: gzip\r\n";
-	#endif
-
-	std::auto_ptr<FormRequest> form(new FormRequest(this, "raw.github.com", 443, header, "", true));
-
-	if (form->exec() != QDialog::Accepted)
-		return;
-
-	bool error;
-	QString answer = form->getResponse(error);
-
-	if (error == true)
-	{
-		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), answer);
-		return;
-	}
-
-	//
-	// разбор конфига
-	//
-
-	QStringList lines = answer.split("\n", QString::SkipEmptyParts);
-
-	for (int i = 0; i < lines.count(); i++)
-	{
-		QHash<QString, QString> values;
-
-		QStringList sections = lines[i].split(";", QString::SkipEmptyParts);
-
-		for (int j = 0; j < sections.count(); j++)
-		{
-			QStringList keyvalue = sections[j].split("=");
-
-			if (keyvalue.count() == 2)
-				values[keyvalue[0]] = keyvalue[1];
-		}
-
-		// проверка ОС
-		#ifdef Q_WS_WIN
-		if (values["os"] != "windows")
-			continue;
-		#endif
-
-		#ifdef Q_WS_MAC
-		if (values["os"] != "macos")
-			continue;
-		#endif
-
-		#ifdef Q_WS_X11
-		if (values["os"] != "linux")
-			continue;
-		#endif
-
-		// проверка архитектуры
-		if (values["arch"] != "noarch")
-		{
-			if (QSysInfo::WordSize == 32 && values["arch"] != "i386")
-				continue;
-			else if (QSysInfo::WordSize == 64 && values["arch"] != "x64")
-				continue;
-		}
-
-		// проверка версии
-		bool ok = false;
-		int current_build  = getBuildNumber();
-		int manifest_build = values["build"].toUInt(&ok);
-
-		if (ok == false)
-		{
-			QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Манифест имеет неверную информацию о номере билда!"));
-			return;
-		}
-
-		if (current_build == manifest_build)
-		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Вы имеете самый последний билд программы!"));
-			return;
-		}
-		else if (current_build > manifest_build)
-		{
-			QMessageBox::information(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("Ваш билд программы более новый! Пожалуйста, обновите бинарный файл на <a href='https://github.com/rsdn/avalon/wiki/Скачать'>странице загрузки</a>."));
-			return;
-		}
-
-		QString msg = "";
-		msg += QString::fromUtf8("Обнаружен новый билд программы!\n");
-		msg += QString::fromUtf8("Ваш билд: ") + QString::number(current_build) + "\n";
-		msg += QString::fromUtf8("Новый билд: ") + QString::number(manifest_build) + "\n";
-		msg += QString::fromUtf8("Перейти на страницу загрузки нового билда?");
-
-		if (QMessageBox::question(this, QString::fromUtf8("Внимание!"), msg, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
-			QDesktopServices::openUrl(values["url"]);
-
-		return;
-	}
-
-	QMessageBox::warning(this, QString::fromUtf8("Внимание!"), QString::fromUtf8("В манифесте обновлений отсутствует информация для вашей конфигурации!"));
 }
 //----------------------------------------------------------------------------------------------

@@ -40,11 +40,6 @@ class AFormMain :
 		 */
 		int synchronizeInterval ();
 
-		/*!
-		 * \brief Проверка наличия обновлений
-		 */
-		void checkUpdate ();
-
 	private slots:
 
 		//
@@ -100,7 +95,6 @@ class AFormMain :
 		void menu_q_wikipedia_url_triggered  (); /*!< \brief ? / Перейти на Википедию      */
 		void menu_q_google_url_triggered     (); /*!< \brief ? / Перейти на Google         */
 		void menu_q_rsdn_url_triggered       (); /*!< \brief ? / Перейти на RSDN           */
-		void menu_q_update_triggered         (); /*!< \brief ? / Обновление                */
 		void menu_q_about_triggered          (); /*!< \brief ? / О программе               */
 
 		//

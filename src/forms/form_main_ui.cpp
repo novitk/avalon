@@ -58,6 +58,7 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	// меню "Сервис"
 	m_menu_service_synchronize = m_menu_service->addAction(QString::fromUtf8("Синхронизировать"));
 	m_menu_service_synchronize->setIcon(QIcon(":/icons/synchronize16.png"));
+	m_menu_service_synchronize->setShortcut(QString("CTRL+I"));
 
 	m_menu_service_download = m_menu_service->addAction(QString::fromUtf8("Загрузить сообщение / ветку"));
 	m_menu_service_download->setIcon(QIcon(":/icons/download16.png"));
@@ -130,19 +131,6 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	m_menu_q_rsdn_url->setIcon(QIcon(":/icons/rsdn16.png"));
 
 	m_menu_q->addSeparator();
-
-	m_menu_q_update = m_menu_q->addAction(QString::fromUtf8("Обновление"));
-	m_menu_q_update->setIcon(QIcon(":/icons/update16.png"));
-
-	if (!(QSysInfo::WordSize == 32 || QSysInfo::WordSize == 64))
-		m_menu_q_update->setVisible(false);
-
-#if (defined(Q_WS_WIN) || defined(Q_WS_MAC) || defined(Q_WS_X11))
-	if (m_menu_q_update->isVisible() == true)
-		m_menu_q->addSeparator();
-#else
-	m_menu_q_update->setVisible(false);
-#endif
 
 	m_menu_q_about = m_menu_q->addAction(QString::fromUtf8("О программе"));
 	m_menu_q_about->setIcon(QIcon(":/icons/help16.png"));
