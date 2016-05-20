@@ -177,10 +177,10 @@ QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
 			;
 
 	QString pad = "			";
-
+	QString ratingLinkOpen = "<a id='rating' title='"+all_rate_details+"' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + "'>";
 	result +=
-		pad + "<div class='info_left'><a id='rating' title='"+all_rate_details+"' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + QString::fromUtf8("'>Оценки</a>:</div>\n") +
-		pad + "<div class='info_right'>\n";
+		pad + ratingLinkOpen + "<span class='info_left'>" + QString::fromUtf8("Оценки:</span>\n") +
+		pad + "<span class='info_right'>\n";
 
 	if (rate_thanks > 0)
 		result += pad + QString::number(rate_thanks) + " (" + QString::number(rate_thanks_count) + ") ";
@@ -195,7 +195,7 @@ QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
 	if(rate_funny % 3 == 1)
 		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
 
-	result += pad + "</div><br />\n";
+	result += pad + "</span></a><br />\n";
 
 	return result;
 }
