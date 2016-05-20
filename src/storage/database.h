@@ -13,14 +13,14 @@
  * \brief Класс-обертка для работы с БД
  */
 class ADatabase :
-	public ADatabaseError, // общий класс контроля ошибок
-	public QSqlDatabase    // Qt класс для работы с БД
+	public ADatabaseError,   // общий класс контроля ошибок
+	public QSqlDatabase      // Qt класс для работы с БД
 {
 	public:
 
 		/*!
 		 * \brief Конструктор объекта для работы с БД
-		 * \param type Тип БД, для MySQL type = "QMYSQL" (см. документацию Qt)
+		 * \param type Тип БД, для SQLite type = "SQLite" (см. документацию Qt)
 		 */
 		ADatabase  (const QString& type);
 		~ADatabase ();
@@ -58,4 +58,4 @@ class ADatabase :
 		void close () { QSqlDatabase::close(); }
 };
 
-#endif
+#endif   // _avalon_database_h_

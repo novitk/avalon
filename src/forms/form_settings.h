@@ -37,11 +37,6 @@ class FormSettings : public FormSettingsUI
 		 */
 		void createSQLiteDatabase();
 
-		/*!
-		 * \brief Создание базы MySQL
-		 */
-		void createMySQLDatabase();
-
 	private slots:
 
 		/*!

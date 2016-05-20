@@ -12,12 +12,6 @@
 * [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
 * [Windows](https://yadi.sk/d/W9kZi-GLqTN7G)
 
-# Настройка highlight.js
-
-Перейдите по [ссылке](http://highlightjs.org/download/), выберите нужные (все) компоненты для языков и нажмите кнопку `Скачать`. После скачивания zip архива, распакуйте его содержимое в директорию программы как есть (т.е. в директории программы должна появиться директория `highlight`, внутри которой лежит упакованный скрипт `highlight.pack.js` и находится директория `styles` с файлами стилей).
-
-Для программы, установленной из пакета, директория `highlight` должна находиться по пути `~/.avalon/highlight`.
-
 # FAQ
 
 ## Установил avalon, нажал кнопку синхронизации - он зациклился и не отвечает

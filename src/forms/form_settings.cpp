@@ -70,32 +70,6 @@ void FormSettings::button_database_create_clicked ()
 		settings.setValue("storage/type", old_type);
 		settings.setValue("sqlite/file",  old_value);
 	}
-	else
-	{
-		// предыдущие настройки
-		QString old_type     = settings.value("storage/type", "MySQL").toString();
-#ifdef Q_WS_WIN
-		QString old_host     = settings.value("mysql/host", "127.0.0.1").toString();
-		QString old_port     = settings.value("mysql/port", "3306").toString();
-#else
-		QString old_host     = settings.value("mysql/host", "localhost").toString();
-		QString old_port     = settings.value("mysql/port", "/tmp/mysql.sock").toString();
-#endif
-		QString old_name     = settings.value("mysql/name",     "avalon").toString();
-		QString old_login    = settings.value("mysql/login",    "root").toString();
-		QString old_password = settings.value("mysql/password", "").toString();
-
-		// создание базы
-		createMySQLDatabase();
-
-		// восстановление настроек на случай отмены
-		settings.setValue("storage/type",   old_type);
-		settings.setValue("mysql/host",     old_host);
-		settings.setValue("mysql/port",     old_port);
-		settings.setValue("mysql/name",     old_name);
-		settings.setValue("mysql/login",    old_login);
-		settings.setValue("mysql/password", old_password);
-	}
 }
 //----------------------------------------------------------------------------------------------
 
@@ -142,38 +116,6 @@ void FormSettings::createSQLiteDatabase ()
 }
 //----------------------------------------------------------------------------------------------
 
-void FormSettings::createMySQLDatabase ()
-{
-	QSettings settings;
-
-	// новые настройки
-	settings.setValue("storage/type",   "MySQL");
-	settings.setValue("mysql/host",     m_text_database_host->text());
-	settings.setValue("mysql/port",     m_text_database_port->text());
-	settings.setValue("mysql/name",     m_text_database_name->text());
-	settings.setValue("mysql/login",    m_text_database_login->text());
-	settings.setValue("mysql/password", m_text_database_password->text());
-
-	// получение хранилища
-	std::auto_ptr<IAStorage> storage(AStorageFactory::getStorage());
-
-	if (storage.get() == NULL)
-	{
-		QMessageBox::critical(this, QString::fromUtf8("Ошибка!"), QString::fromUtf8("Не выбрано хранилище данных"));
-		return;
-	}
-
-	// создание базы
-	if (storage->createDatabase() == false)
-	{
-		storage->showError(this);
-		return;
-	}
-
-	QMessageBox::information(this, QString::fromUtf8("Создание базы данных"), QString::fromUtf8("База данных успешно создана"));
-}
-//----------------------------------------------------------------------------------------------
-
 void FormSettings::check_use_proxy_state_changed (int state)
 {
 	bool e = false;
@@ -190,18 +132,9 @@ void FormSettings::check_use_proxy_state_changed (int state)
 }
 //----------------------------------------------------------------------------------------------
 
-void FormSettings::combo_database_type_current_index_changed (const QString& text)
+void FormSettings::combo_database_type_current_index_changed (const QString& /*text*/)
 {
 	bool e = false;
-
-	if (text == "MySQL")
-		e = true;
-
-	m_text_database_host->setEnabled(e);
-	m_text_database_port->setEnabled(e);
-	m_text_database_name->setEnabled(e);
-	m_text_database_login->setEnabled(e);
-	m_text_database_password->setEnabled(e);
 	m_text_database_file->setEnabled(!e);
 	m_button_database_file->setEnabled(!e);
 }
@@ -215,8 +148,7 @@ void FormSettings::save ()
 	// сеть
 	//
 
-	settings.setValue("rsdn/host",     m_text_rsdn_host->text());
-	settings.setValue("rsdn/port",     m_text_rsdn_port->text());
+	settings.setValue("rsdn/proto",    m_combo_rsdn_proto->currentText());
 	settings.setValue("rsdn/login",    m_text_rsdn_login->text());
 	settings.setValue("rsdn/password", m_text_rsdn_password->text());
 
@@ -233,13 +165,6 @@ void FormSettings::save ()
 	//
 
 	settings.setValue("storage/type", m_combo_database_type->currentText());
-
-	settings.setValue("mysql/host",     m_text_database_host->text());
-	settings.setValue("mysql/port",     m_text_database_port->text());
-	settings.setValue("mysql/name",     m_text_database_name->text());
-	settings.setValue("mysql/login",    m_text_database_login->text());
-	settings.setValue("mysql/password", m_text_database_password->text());
-
 	settings.setValue("sqlite/file", m_text_database_file->text());
 
 	//
@@ -268,11 +193,17 @@ void FormSettings::restore ()
 	//
 	// сеть
 	//
+	QString rsdn_proto = settings.value("rsdn/proto", "HTTPS").toString();
 
-	m_text_rsdn_host->setText     (settings.value("rsdn/host",     "rsdn.ru").toString());
-	m_text_rsdn_port->setText     (settings.value("rsdn/port",     "443"    ).toString());
-	m_text_rsdn_login->setText    (settings.value("rsdn/login",    ""       ).toString());
-	m_text_rsdn_password->setText (settings.value("rsdn/password", ""       ).toString());
+	int idx = m_combo_rsdn_proto->findText(rsdn_proto);
+
+	if (idx != -1)
+		m_combo_rsdn_proto->setCurrentIndex(idx);
+	else
+		m_combo_rsdn_proto->setCurrentIndex(0);
+
+	m_text_rsdn_login->setText    (settings.value("rsdn/login",    "").toString());
+	m_text_rsdn_password->setText (settings.value("rsdn/password", "").toString());
 
 	bool use_proxy = settings.value("proxy/enabled", false).toInt();
 
@@ -283,7 +214,7 @@ void FormSettings::restore ()
 
 	QString proxy_type = settings.value("proxy/type", "HTTP").toString();
 
-	int idx = m_combo_proxy_type->findText(proxy_type);
+	idx = m_combo_proxy_type->findText(proxy_type);
 
 	if (idx != -1)
 		m_combo_proxy_type->setCurrentIndex(idx);
@@ -316,18 +247,6 @@ void FormSettings::restore ()
 		m_combo_database_type->setCurrentIndex(idx);
 	else
 		m_combo_database_type->setCurrentIndex(0);
-
-#ifdef Q_WS_WIN
-	m_text_database_host->setText(settings.value("mysql/host", "127.0.0.1").toString());
-	m_text_database_port->setText(settings.value("mysql/port", "3306"     ).toString());
-#else
-	m_text_database_host->setText(settings.value("mysql/host", "localhost"      ).toString());
-	m_text_database_port->setText(settings.value("mysql/port", "/tmp/mysql.sock").toString());
-#endif
-
-	m_text_database_name->setText     (settings.value("mysql/name",     "avalon").toString());
-	m_text_database_login->setText    (settings.value("mysql/login",    "root"  ).toString());
-	m_text_database_password->setText (settings.value("mysql/password", ""      ).toString());
 
 #ifndef AVALON_PACKAGE
 	m_text_database_file->setText(settings.value("sqlite/file", QDir::homePath() + "/avalon.db").toString());

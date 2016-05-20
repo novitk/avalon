@@ -1,18 +1,18 @@
 # Maintainer: Anton Batenev <antonbatenev@yandex.ru>
 
 pkgname=('avalon')
-pkgver=1.0.444
+pkgver=2.0.1
 pkgrel=1
 pkgdesc="RSDN offline client"
 arch=('i686' 'x86_64')
 url="https://github.com/abbat/${pkgname}"
 license=('BSD')
-makedepends=('qt4' 'qtwebkit' 'qtchooser' 'aspell' 'zlib' 'git')
+makedepends=('qt5-base' 'qt5-webkit' 'aspell' 'zlib' 'git')
 optdepends=('aspell-ru: Russian dictionary for aspell' 'aspell-en: English dictionary for aspell')
-source=("https://build.opensuse.org/source/home:antonbatenev:${pkgname}/${pkgname}/${pkgname}_${pkgver}.tar.bz2")
+source=("git+https://github.com/abbat/${pkgname}.git")
 sha256sums=('SKIP')
 
-export QT_SELECT=4
+export QT_SELECT=5
 
 build() {
     project_file="${pkgname}.pro"

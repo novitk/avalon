@@ -15,11 +15,11 @@
  */
 typedef enum AIDSet
 {
-	idsMessage, /*!< \brief Сообщение      */
-	idsTopic,   /*!< \brief Топик          */
-	idsForum,   /*!< \brief Форум          */
-	idsGroup,   /*!< \brief Группа форумов */
-	idsAll      /*!< \brief Все            */
+	idsMessage,   /*!< \brief Сообщение      */
+	idsTopic,     /*!< \brief Топик          */
+	idsForum,     /*!< \brief Форум          */
+	idsGroup,     /*!< \brief Группа форумов */
+	idsAll        /*!< \brief Все            */
 } AIDSet;
 
 /*!
@@ -296,10 +296,10 @@ class IAStorage : public ADatabaseError
 		virtual bool deleteSpecial (const QList<int>& ids, int id_special) = 0;
 
 		/*!
-		 * \deprecated Использовался для тестирования работы MySQL с большой (~5GB) базой сообщений, для чего пришлось выкачать все сообщения RSDN
+		 * \deprecated Использовался для тестирования работы с большой базой сообщений, для чего пришлось выкачать все сообщения RSDN
 		 * \brief Возвращает существующие id сообщений в заданном интервале.
 		 * Используется для вытягивания всей базы RSDN.
-		 * В реализациях хранилищ, отличных от стандартного MySQL, может смело выдавать ошибку
+		 * В реализациях хранилищ, отличных от стандартного, может смело выдавать ошибку
 		 * с сообщением "не реализованно", т.к. данная функциональность, скорее всего, будет скрыта от пользователя.
 		 * \param from_id Начальный ID сообщения.
 		 * \param to_id Конечный ID сообщения.
@@ -366,4 +366,4 @@ class IAStorage : public ADatabaseError
 		virtual bool getAnswers2MeList (int id_me, int count, QList<int>& list) = 0;
 };
 
-#endif
+#endif   // _avalon_istorage_h_

@@ -23,6 +23,8 @@ typedef ATreeWidgetItemT<AMessageInfoGUI> MessageTreeWidgetItem;
 
 AMessageTree::AMessageTree (QWidget* parent, QWidget* form) : QTreeWidget (parent), IMessageTree ()
 {
+	setFrameShadow(QFrame::Plain);
+
 	//
 	// инициализация полей
 	//
@@ -45,10 +47,6 @@ AMessageTree::AMessageTree (QWidget* parent, QWidget* form) : QTreeWidget (paren
 	//
 	// инициализация GUI виджета
 	//
-
-#ifndef Q_WS_WIN
-	setFrameShadow(QFrame::Plain);
-#endif
 
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 

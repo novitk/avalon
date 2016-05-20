@@ -32,6 +32,8 @@ typedef ATreeWidgetItemT<AForumInfoGUI> ForumTreeWidgetItem;
 
 AForumTree::AForumTree (QWidget* parent, QWidget* form) : QTreeWidget (parent), IForumTree ()
 {
+	setFrameShadow(QFrame::Plain);
+
 	//
 	// инициализация полей
 	//
@@ -48,10 +50,6 @@ AForumTree::AForumTree (QWidget* parent, QWidget* form) : QTreeWidget (parent), 
 	//
 	// инициализация GUI виджета
 	//
-
-	#ifndef Q_WS_WIN
-		setFrameShadow(QFrame::Plain);
-	#endif
 
 	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 

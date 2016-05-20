@@ -28,8 +28,7 @@ class FormSettingsUI : public QDialog
 		         QVBoxLayout* m_layout_network_spacer;                /*!< \brief Layout для выравнивания по вертикали    */
 		            QHBoxLayout* m_layout_network;                    /*!< \brief Общий layout для настроек сети          */
 		               QVBoxLayout* m_layout_label_network;           /*!< \brief Layout для надписей                     */
-		                  QLabel* m_label_rsdn_host;                  /*!< \brief Хост RSDN                               */
-		                  QLabel* m_label_rsdn_port;                  /*!< \brief Порт RSDN                               */
+		                  QLabel* m_label_rsdn_proto;                 /*!< \brief Протокол доступа к веб-сервису RSDN     */
 		                  QLabel* m_label_rsdn_login;                 /*!< \brief Логин на RSDN                           */
 		                  QLabel* m_label_rsdn_password;              /*!< \brief Пароль на RSDN                          */
 		                  QLabel* m_label_use_proxy;                  /*!< \brief Флаг использования прокси               */
@@ -40,8 +39,7 @@ class FormSettingsUI : public QDialog
 		                  QLabel* m_label_proxy_password;             /*!< \brief Пароль прокси-сервера                   */
 		                  QLabel* m_label_use_proxy_webkit;           /*!< \brief Флаг использования прокси для webkit    */
 		               QVBoxLayout* m_layout_text_network;            /*!< \brief Layout для текстовых полей              */
-		                  QLineEdit* m_text_rsdn_host;                /*!< \brief Хост RSDN                               */
-		                  QLineEdit* m_text_rsdn_port;                /*!< \brief Порт RSDN                               */
+		                  QComboBox* m_combo_rsdn_proto;              /*!< \brief Протокол доступа к веб-сервису RSDN     */
 		                  QLineEdit* m_text_rsdn_login;               /*!< \brief Логин на RSDN                           */
 		                  QLineEdit* m_text_rsdn_password;            /*!< \brief Пароль на RSDN                          */
 		                  QCheckBox* m_check_use_proxy;               /*!< \brief Флаг использования прокси               */
@@ -61,19 +59,9 @@ class FormSettingsUI : public QDialog
 		            QHBoxLayout* m_layout_storage;                    /*!< \brief Общий layout для настроек хранилища     */
 		               QVBoxLayout* m_layout_label_storage;           /*!< \brief Layout для надписей                     */
 		                  QLabel* m_label_database_type;              /*!< \brief Тип хранилища                           */
-		                  QLabel* m_label_database_host;              /*!< \brief Хост БД                                 */
-		                  QLabel* m_label_database_port;              /*!< \brief Порт/сокет БД                           */
-		                  QLabel* m_label_database_name;              /*!< \brief Имя базы                                */
-		                  QLabel* m_label_database_login;             /*!< \brief Логин БД                                */
-		                  QLabel* m_label_database_password;          /*!< \brief Пароль БД                               */
 		                  QLabel* m_label_database_file;              /*!< \brief Файл базы (для файловых БД)             */
 		               QVBoxLayout* m_layout_text_storage;            /*!< \brief Layout для текстовых полей              */
 		                  QComboBox* m_combo_database_type;           /*!< \brief Тип базы хранилища                      */
-		                  QLineEdit* m_text_database_host;            /*!< \brief Хост БД                                 */
-		                  QLineEdit* m_text_database_port;            /*!< \brief Порт/сокет БД                           */
-		                  QLineEdit* m_text_database_name;            /*!< \brief Имя базы                                */
-		                  QLineEdit* m_text_database_login;           /*!< \brief Логин БД                                */
-		                  QLineEdit* m_text_database_password;        /*!< \brief Пароль БД                               */
 		                  QHBoxLayout* m_layout_database_file;        /*!< \brief Layout для поля выбора файла            */
 		                     QLineEdit*   m_text_database_file;       /*!< \brief Файл базы (для файловых БД)             */
 		                     QPushButton* m_button_database_file;     /*!< \brief Кнопка выбора файла базы                */
@@ -116,9 +104,9 @@ class FormSettingsUI : public QDialog
 
 	private:
 
-		QIntValidator* m_timer_validator;           /*!< \brief Валидатор значения в поле "время пометки как прочитанное" */
-		QIntValidator* m_max_topic_show_validator;  /*!< \brief Валидатор значения в поле "Максимальное кол-во топиков"   */
-		QIntValidator* m_update_interval_validator; /*!< \brief Валидатор значения в поле "Интервал автообновления"       */
+		QIntValidator* m_timer_validator;             /*!< \brief Валидатор значения в поле "время пометки как прочитанное" */
+		QIntValidator* m_max_topic_show_validator;    /*!< \brief Валидатор значения в поле "Максимальное кол-во топиков"   */
+		QIntValidator* m_update_interval_validator;   /*!< \brief Валидатор значения в поле "Интервал автообновления"       */
 };
 
 #endif   // _avalon_form_settings_ui_h_

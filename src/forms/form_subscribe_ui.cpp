@@ -1,11 +1,7 @@
 #include "form_subscribe_ui.h"
 //----------------------------------------------------------------------------------------------
 
-FormSubscribeUI::FormSubscribeUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormSubscribeUI::FormSubscribeUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("подписка"));
 
@@ -29,10 +25,6 @@ FormSubscribeUI::FormSubscribeUI (QWidget* parent) : QDialog (parent, Qt::Window
 	m_layout_form->addLayout(m_layout_button);
 
 	m_tree_forum = new QTreeWidget();
-
-	#ifndef Q_WS_WIN
-		m_tree_forum->setFrameShadow(QFrame::Plain);
-	#endif
 
 	m_tree_forum->setSelectionMode(QAbstractItemView::NoSelection);
 	m_tree_forum->setColumnCount(1);

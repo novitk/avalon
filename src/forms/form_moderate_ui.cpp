@@ -3,11 +3,7 @@
 #include "storage/storage_factory.h"
 //----------------------------------------------------------------------------------------------
 
-FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowCloseButtonHint)
 {
 	AModerateAction action;
 
@@ -86,10 +82,6 @@ FormModerateUI::FormModerateUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_description->addWidget(m_label_description);
 
 	m_text_description = new QTextEdit(this);
-
-	#ifndef Q_WS_WIN
-		m_text_description->setFrameShadow(QFrame::Plain);
-	#endif
 
 	m_layout_description->addWidget(m_text_description);
 

@@ -19,6 +19,16 @@ QString AFormatter::headHTML ()
 		custom_css = "	<link rel='stylesheet' href='file://" + path + "/avalon.css' type='text/css' media='screen' />\n";
 #endif
 
+	// https://tech.yandex.ru/jslibs/#highlight
+	QStringList lang;
+	lang << "avrasm" << "bash" << "cmake" << "cpp" << "cs" << "css" << "delphi" << "diff" << "dos" << "erlang"
+	     << "haskell" << "http" << "ini" << "java" << "javascript" << "json" << "lisp" << "lua" << "perl"
+	     << "php" << "python" << "ruby" << "rust" << "sql" << "vbscript" << "xml";
+
+	QString langs;
+	for (int i = 0; i < lang.count(); i++)
+		langs += "	<script src='https://yastatic.net/highlightjs/8.2/languages/" + lang[i] + ".min.js'></script>\n";
+
 	QString result =
 		"<!DOCTYPE html>\n"
 		"<html xmlns='http://www.w3.org/1999/xhtml'>\n"
@@ -26,13 +36,9 @@ QString AFormatter::headHTML ()
 		"	<meta charset='utf-8' />\n"
 		"	<link rel='stylesheet' href='qrc:/style.css' type='text/css' media='screen' />\n"
 		+ custom_css +
-#ifdef Q_WS_WIN
-		"	<link rel='stylesheet' title='Magula' href='file:///" + path + "/highlight/styles/magula.css' />\n"
-		"	<script src='file:///" + path + "/highlight/highlight.pack.js'></script>\n"
-#else
-		"	<link rel='stylesheet' title='Magula' href='file://" + path + "/highlight/styles/magula.css' />\n"
-		"	<script src='file://" + path + "/highlight/highlight.pack.js'></script>\n"
-#endif
+		"	<link rel='stylesheet' title='Magula' href='https://yastatic.net/highlightjs/8.2/styles/magula.min.css' />\n"
+		"	<script src='https://yastatic.net/highlightjs/8.2/highlight.min.js'></script>\n"
+		+ langs +
 		"	<script>hljs.tabReplace = '    '; hljs.initHighlightingOnLoad();</script>\n"
 		"</head>\n"
 		"<body>\n";
@@ -343,6 +349,7 @@ QString AFormatter::formatParsedBlock (const AParsedBlock& block)
 			{ pbtOCaml,     "lisp"     },
 			{ pbtProlog,    "lisp"     },
 			{ pbtPython,    "python"   },
+			{ pbtPython,    "rust"     },
 			{ pbtRuby,      "ruby"     },
 			{ pbtNemerle,   "cs"       },
 			{ pbtText,      NULL       }  // last

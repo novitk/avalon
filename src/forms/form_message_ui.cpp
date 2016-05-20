@@ -52,11 +52,7 @@ ACharMapItem g_charmap_other [] =
 
 //----------------------------------------------------------------------------------------------
 
-FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint
-#if QT_VERSION >= 0x040500
- | Qt::WindowCloseButtonHint
-#endif
-)
+FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitleHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::WindowCloseButtonHint)
 {
 	setWindowTitle(QString::fromUtf8("новое сообщение"));
 
@@ -305,10 +301,6 @@ FormMessageUI::FormMessageUI (QWidget* parent) : QDialog (parent, Qt::WindowTitl
 	m_layout_view   = new QHBoxLayout(m_tab_view);
 
 	m_text_source = new ASpellTextEdit(m_tab_source);
-
-#ifndef Q_WS_WIN
-	m_text_source->setFrameShadow(QFrame::Plain);
-#endif
 
 	m_text_source->setUndoRedoEnabled(true);
 	m_text_source->setAcceptRichText(false);

@@ -111,6 +111,9 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[nemerle]",          "[/nemerle]",   pbtNemerle,   pbstSourceCode },
 		{ "[python]",           "[/python]",    pbtPython,    pbstSourceCode },
 
+		// https://rsdn.ru/forum/flame.comp/6033003.1
+		{ "[rust]",             "[/rust]",      pbtRust,      pbstSourceCode },
+
 		// https://rsdn.ru/forum/rsdn/3227340.1
 		{ "[code=]",            "[/code]",      pbtCode,      pbstSourceCode },
 		{ "[code=assembler]",   "[/code]",      pbtAssembler, pbstSourceCode },
@@ -128,6 +131,7 @@ AParsedBlockList AParser::parseBlocks (const QString& source)
 		{ "[code=php]",         "[/code]",      pbtPHP,       pbstSourceCode },
 		{ "[code=prolog]",      "[/code]",      pbtProlog,    pbstSourceCode },
 		{ "[code=python]",      "[/code]",      pbtPython,    pbstSourceCode },
+		{ "[code=rust]",        "[/code]",      pbtRust,      pbstSourceCode },
 		{ "[code=ruby]",        "[/code]",      pbtRuby,      pbstSourceCode },
 		{ "[code=sql]",         "[/code]",      pbtSQL,       pbstSourceCode },
 		{ "[code=visualbasic]", "[/code]",      pbtBasic,     pbstSourceCode },

@@ -12,7 +12,6 @@
 
 #include <QDir>
 #include <QHash>
-#include <QHttp>
 #include <QIcon>
 #include <QFrame>
 #include <QTimer>
@@ -64,11 +63,14 @@
 #include <QLibraryInfo>
 #include <QIntValidator>
 #include <QNetworkProxy>
+#include <QNetworkReply>
 #include <QDesktopWidget>
 #include <QTemporaryFile>
+#include <QNetworkRequest>
 #include <QCalendarWidget>
 #include <QDesktopServices>
 #include <QSslConfiguration>
+#include <QNetworkAccessManager>
 
 //
 // системные заголовочные файлы
@@ -112,13 +114,13 @@ int getBuildNumber ();
 
 /*!
  * \brief Получение строки версии (см. version.cpp)
- * \return Строка версии вида "1.0.NNN"
+ * \return Строка версии вида "2.0.NNN"
  */
 QString getVersionString ();
 
 /*!
  * \brief Получение строки имени агента (см. version.cpp)
- * \return Строка агента вида "avalon/1.0.NNN (<url>)"
+ * \return Строка агента вида "avalon/2.0.NNN (<url>)"
  */
 QString getAgentString ();
 
@@ -199,6 +201,6 @@ class AProfiler
 		timeval m_stop;
 };
 
-#endif // #ifndef Q_WS_WIN
+#endif   // #ifndef Q_WS_WIN
 
-#endif
+#endif   // _avalon_sysheaders_h_

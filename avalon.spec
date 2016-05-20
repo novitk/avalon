@@ -1,5 +1,5 @@
 Name:          avalon
-Version:       1.0.444
+Version:       2.0.1
 Release:       1
 Summary:       RSDN offline client
 Group:         Applications/Internet
@@ -69,5 +69,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Fri Mar 25 2016 Anton Batenev <antonbatenev@yandex.ru> 1.0.444-1
+* Thu Mar 24 2016 Anton Batenev <antonbatenev@yandex.ru> 2.0.1-1
 - Initial RPM release
