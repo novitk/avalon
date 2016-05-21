@@ -22,8 +22,8 @@ QString AFormatter::headHTML ()
 	// https://tech.yandex.ru/jslibs/#highlight
 	QStringList lang;
 	lang << "avrasm" << "bash" << "cmake" << "cpp" << "cs" << "css" << "delphi" << "diff" << "dos" << "erlang"
-	     << "haskell" << "http" << "ini" << "java" << "javascript" << "json" << "lisp" << "lua" << "perl"
-	     << "php" << "python" << "ruby" << "rust" << "sql" << "vbscript" << "xml";
+		 << "haskell" << "http" << "ini" << "java" << "javascript" << "json" << "lisp" << "lua" << "perl"
+		 << "php" << "python" << "ruby" << "rust" << "sql" << "vbscript" << "xml";
 
 	QString langs;
 	for (int i = 0; i < lang.count(); i++)
@@ -195,11 +195,11 @@ QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
 	if (rate_disagree > 0)
 		result += pad + QString::fromUtf8("-") + QString::number(rate_disagree) + " ";
 	for(int i=0; i<rate_funny/3; ++i)
-		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/biggrin.png' align='top' alt=':)))'>");
+		result += pad + QString::fromUtf8("<img id='rating_biggrin' src='qrc:/smiles/biggrin.png' align='top' alt=':)))'>");
 	if(rate_funny % 3 == 2)
-		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/grin.png' align='top' alt=':))'>");
+		result += pad + QString::fromUtf8("<img id='rating_grin' src='qrc:/smiles/grin.png' align='top' alt=':))'>");
 	if(rate_funny % 3 == 1)
-		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
+		result += pad + QString::fromUtf8("<img id='rating_smile' src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
 
 	result += pad + "</span></a><br />\n";
 
@@ -446,6 +446,8 @@ QString AFormatter::formatSimpleText (const QString& text)
 	// Список замены BB кодов
 	const ASimpleTag replace_map [] =
 	{
+		{ "[tt]",       "<tt>"     },
+		{ "[/tt]",      "</tt>"    },
 		{ "[b]",       "<b>"       },
 		{ "[/b]",      "</b>"      },
 		{ "[i]",       "<i>"       },
