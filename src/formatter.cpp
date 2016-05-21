@@ -446,6 +446,8 @@ QString AFormatter::formatSimpleText (const QString& text)
 	// Список замены BB кодов
 	const ASimpleTag replace_map [] =
 	{
+		{ "[tt]",       "<tt>"     },
+		{ "[/tt]",      "</tt>"    },
 		{ "[b]",       "<b>"       },
 		{ "[/b]",      "</b>"      },
 		{ "[i]",       "<i>"       },
