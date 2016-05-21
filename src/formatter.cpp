@@ -122,63 +122,86 @@ QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
 
 	QString result = "";
 
-	/* "+1" = -3, "1" = 1, "2" = 2, "3" = 3, "+" = -4, "-" = 0, ";)" = -2 */
-	int rate_plus_one = 0;
-	int rate_one      = 0;
-	int rate_two      = 0;
-	int rate_three    = 0;
-	int rate_plus     = 0;
-	int rate_minus    = 0;
-	int rate_smile    = 0;
+	int rate_funny = 0;
+	int rate_thanks = 0;
+	int rate_thanks_count = 0;
+	int rate_agree = 0;
+	int rate_disagree = 0;
 
+	QString rate_details[7];
 	for (int i = 0; i < rating_list->count(); i++)
 	{
 		AMessageRating info = rating_list->at(i);
-
-		int rate = info.Rate;
-
-		if (rate == 1)
-			rate_one++;
-		else if (rate == 2)
-			rate_two++;
-		else if (rate == 3)
-			rate_three++;
-		else if (rate == 0)
-			rate_minus++;
-		else if (rate == -2)
-			rate_smile++;
-		else if (rate == -3)
-			rate_plus_one++;
-		else if (rate == -4)
-			rate_plus++;
+		int detailIdx=-1;
+		switch(info.Rate)
+		{
+		case 1:
+			rate_thanks += info.UserRating;
+			rate_thanks_count++;
+			detailIdx=0;
+			break;
+		case 2:
+			rate_thanks += 2 * info.UserRating;
+			rate_thanks_count++;
+			detailIdx=1;
+			break;
+		case 3:
+			rate_thanks += 3 * info.UserRating;
+			rate_thanks_count++;
+			detailIdx=2;
+			break;
+		case 0:
+			rate_disagree++;
+			detailIdx=3;
+			break;
+		case -2:
+			rate_funny++;
+			detailIdx=4;
+			break;
+		case -3:
+			rate_thanks++;
+			rate_thanks_count++;
+			detailIdx=5;
+			break;
+		case -4:
+			rate_agree++;
+			detailIdx=6;
+			break;
+		}
+		static const QString rateText[] = {"[1]", "[2]", "[3]", "[-]", ":)", "[+1]", "[+]"};
+		if(detailIdx >= 0)
+			rate_details[detailIdx] += rateText[detailIdx] + (info.Nick.isEmpty() ? info.Name : info.Nick) + " ";
 	}
+	QString all_rate_details =
+			rate_details[5]
+			+ rate_details[0]
+			+ rate_details[1]
+			+ rate_details[2]
+			+ rate_details[3]
+			+ rate_details[6]
+			+ rate_details[4]
+			;
 
-	// может оказаться, что есть всего одна оценка и она не входит в диапазон допустимых - получится пустое пространство
-	if (rate_plus_one > 0 || rate_one > 0 || rate_two > 0 || rate_three > 0 || rate_plus > 0 || rate_minus > 0 || rate_smile > 0)
-	{
-		QString pad = "			";
+	QString pad = "			";
+	QString ratingLinkOpen = "<a id='rating' title='"+all_rate_details+"' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + "'>";
+	result +=
+		pad + ratingLinkOpen + "<span class='info_left'>" + QString::fromUtf8("Оценки:</span>\n") +
+		pad + "<span class='info_right'>\n";
 
-		result +=
-			pad + "<div class='info_left'><a id='rating' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + QString::fromUtf8("'>Оценки</a>:</div>\n") +
-			pad + "<div class='info_right'>\n";
+	if (rate_thanks > 0)
+		result += pad + QString::number(rate_thanks) + " (" + QString::number(rate_thanks_count) + ") ";
+	if (rate_agree > 0)
+		result += pad + QString::fromUtf8("+") + QString::number(rate_agree) + " ";
+	if (rate_disagree > 0)
+		result += pad + QString::fromUtf8("-") + QString::number(rate_disagree) + " ";
+	for(int i=0; i<rate_funny/3; ++i)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/biggrin.png' align='top' alt=':)))'>");
+	if(rate_funny % 3 == 2)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/grin.png' align='top' alt=':))'>");
+	if(rate_funny % 3 == 1)
+		result += pad + QString::fromUtf8("<img id='rating_plus_1' src='qrc:/smiles/smile.png' align='top'' alt=':)'>");
 
-		if (rate_smile > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_plus_1' src='qrc:/icons/rate_smile.png' title='смешно' />") + QString::number(rate_smile) + "\n";
-		if (rate_plus > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_1' src='qrc:/icons/rate_plus.png' title='согласен' />") + QString::number(rate_plus) + "\n";
-		if (rate_minus > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_2' src='qrc:/icons/rate_minus.png' title='не согласен' />") + QString::number(rate_minus) + "\n";
-		if (rate_plus_one > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_3' src='qrc:/icons/rate_plus_1.png' title='+1' />") + QString::number(rate_plus_one) + "\n";
-		if (rate_one > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_smile' src='qrc:/icons/rate_1.png' title='интересно' />") + QString::number(rate_one) + "\n";
-		if (rate_two > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_plus' src='qrc:/icons/rate_2.png' title='спасибо' />") + QString::number(rate_two) + "\n";
-		if (rate_three > 0)
-			result += pad + QString::fromUtf8("	<img id='rating_minus' src='qrc:/icons/rate_3.png' title='супер' />") + QString::number(rate_three) + "\n";
-
-		result += pad + "</div><br />\n";
-	}
+	result += pad + "</span></a><br />\n";
 
 	return result;
 }
@@ -243,7 +266,6 @@ QString AFormatter::formatMessage (const AMessageInfo& message, const AForumInfo
 
 	// хвост html
 	result += footerHTML();
-
 	return result;
 }
 //----------------------------------------------------------------------------------------------
@@ -600,7 +622,7 @@ QString AFormatter::formatHyperlinks (const QString& text)
 		QString html;
 		QString lstr = url3.cap(1);
 		int     lval = AParser::isURL(lstr);
-
+		index += url3.matchedLength();
 		index += url3.matchedLength();
 		if (lval == 1)
 		{
