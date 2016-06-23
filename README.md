@@ -6,10 +6,10 @@
 
 # Загрузка / Установка
 
-* [Debian, Ubuntu](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
-* [Fedora, openSUSE, CentOS](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
+* [Debian, Ubuntu](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon2)
+* [Fedora, openSUSE, CentOS](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon2)
 * [Ubuntu PPA](https://launchpad.net/~abbat/+archive/ubuntu/avalon) - `ppa:abbat/avalon`
-* [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon)
+* [Arch](http://software.opensuse.org/download.html?project=home:antonbatenev:avalon&package=avalon2)
 * [Windows](https://yadi.sk/d/W9kZi-GLqTN7G)
 
 # FAQ

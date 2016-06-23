@@ -1,5 +1,5 @@
-avalon (2.0.1) UNRELEASED; urgency=low
+avalon2 (2.0.1) stable; urgency=low
 
   * Переключение на версию 2.0.1
 
- -- Anton Batenev <antonbatenev@yandex.ru>  Thu, 24 Mar 2016 20:42:46 +0300
+ -- Anton Batenev <antonbatenev@yandex.ru>  Fri, 24 Jun 2016 00:14:32 +0300

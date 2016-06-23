@@ -18,7 +18,7 @@ QT_OPTS="network sql"
 if [ "${QT_SELECT}" -eq "4" ]; then
 	QT_OPTS="${QT_OPTS} webkit"
 else
-	QT_OPTS="${QT_OPTS} widgets webkitwidgets"
+	QT_OPTS="${QT_OPTS} core widgets webkitwidgets"
 fi
 
 # создание pro-файла
