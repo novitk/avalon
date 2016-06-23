@@ -12,9 +12,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %if 0%{?suse_version}
 BuildRequires:  libqt5-qtbase-devel, libqt5-qttools-devel, libqt5-qtsvg-devel, libQt5WebKitWidgets-devel
-%endif
-
-%if 0%{?fedora} || 0%{?centos}
+%else
 BuildRequires:  qt5-qtbase-devel, qt5-qttools-devel, qt5-qtsvg-devel, qt5-qtwebkit-devel
 %endif
 
