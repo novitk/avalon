@@ -34,6 +34,52 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	m_menu_view_source->setShortcut(QString("V"));
 	m_menu_view_source->setEnabled(false);
 
+	QStringList styles = QStyleFactory::keys();
+
+	if (styles.count() > 0)
+	{
+		QSettings settings;
+		QString default_style = settings.value("layout/style", "").toString();
+		if (default_style == "")
+		{
+#ifdef Q_WS_WIN
+			if (styles.contains("Windows") == true)
+				default_style = "Windows";
+			else
+				default_style = styles[0];
+#else
+			if (styles.contains("Cleanlooks") == true)
+				default_style = "Cleanlooks";
+			else if (styles.contains("Plastique") == true)
+				default_style = "Plastique";
+			else if (styles.contains("GTK+") == true)
+				default_style = "GTK+";
+			else
+				default_style = styles[0];
+#endif
+		}
+
+		QApplication::setStyle(QStyleFactory::create(default_style));
+
+		m_menu_view->addSeparator();
+
+		QActionGroup* style_group = new QActionGroup(m_menu_view);
+		style_group->setExclusive(true);
+
+		for (int i = 0; i < styles.count(); i++)
+		{
+			QAction* style_action = m_menu_view->addAction(styles[i]);
+			style_action->setCheckable(true);
+
+			style_group->addAction(style_action);
+
+			if (styles[i] == default_style)
+				style_action->setChecked(true);
+
+			connect(style_action, SIGNAL(triggered()), this, SLOT(menu_style_triggered()));
+		}
+	}
+
 	// меню "Перейти"
 	m_menu_goto_next_unread_article = m_menu_goto->addAction(QString::fromUtf8("Следующая непрочитанная статья"));
 	m_menu_goto_next_unread_article->setIcon(QIcon(":/icons/nextunreadarticle16.png"));
@@ -255,5 +301,15 @@ void AFormMainUI::restore ()
 
 	m_forum_tree->restore();
 	m_message_tree->restore();
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMainUI::menu_style_triggered()
+{
+	QAction* style_menu = (QAction*)sender();
+	QApplication::setStyle(QStyleFactory::create(style_menu->text()));
+
+	QSettings settings;
+	settings.setValue("layout/style", style_menu->text());
 }
 //----------------------------------------------------------------------------------------------

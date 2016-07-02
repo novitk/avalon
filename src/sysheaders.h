@@ -61,6 +61,7 @@
 #include <QApplication>
 #include <QTextBrowser>
 #include <QLibraryInfo>
+#include <QStyleFactory>
 #include <QIntValidator>
 #include <QNetworkProxy>
 #include <QNetworkReply>
