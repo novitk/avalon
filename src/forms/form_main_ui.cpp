@@ -34,6 +34,9 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	m_menu_view_source->setShortcut(QString("V"));
 	m_menu_view_source->setEnabled(false);
 
+	// TODO: Возможно стоит интегировать стили из
+	// http://code.qt.io/cgit/qt/qtstyleplugins.git/
+	// если их нет среди текущих (а для Debian 8 это так)
 	QStringList styles = QStyleFactory::keys();
 
 	if (styles.count() > 0)

@@ -42,6 +42,33 @@ class AFormMain :
 		 */
 		int synchronizeInterval ();
 
+		/*!
+		 * \brief Блокировщик QAction на время длительной операции (синхронизации)
+		 * Используется для предотвращения повторных запусков операции из интерфейса
+		 */
+		class AActionLocker
+		{
+			public:
+
+				AActionLocker (QAction* action)
+				{
+					m_action = action;
+					m_action->setEnabled(false);
+				}
+
+				~AActionLocker ()
+				{
+					m_action->setEnabled(true);
+				}
+
+			private:
+
+				/*!
+				 * \brief Блокируемый QAction
+				 */
+				QAction* m_action;
+		};
+
 	private slots:
 
 		//

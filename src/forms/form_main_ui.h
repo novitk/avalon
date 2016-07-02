@@ -100,10 +100,10 @@ class AFormMainUI : public QMainWindow
 		 * \brief Статусбар
 		 */
 		QStatusBar* m_status_bar;
-		
+
 	private slots:
-	
-		void menu_style_triggered();   /*!< \brief Вид / Стиль / ... */
+
+		void menu_style_triggered ();   /*!< \brief Вид / Стиль / ... */
 };
 
 #endif   // _avalon_form_main_ui_h_

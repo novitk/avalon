@@ -131,6 +131,10 @@ void AFormMain::menu_view_source_triggered ()
 
 void AFormMain::menu_service_synchronize_triggered ()
 {
+	// блокирование кнопки синхронизации, чтобы исходящие сообщения
+	// нельзя было отправить несколько раз пока идет основная синхронизация
+	AActionLocker tool_bar_synchronize_lock(m_tool_bar_synchronize);
+
 	// сохранение текущего выделения в дереве сообщений
 	QList<int> restore_path;
 
