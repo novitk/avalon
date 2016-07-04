@@ -1,3 +1,10 @@
+avalon2 (2.0.2) stable; urgency=low
+
+  * Добавление поддержки тем UI;
+  * Блокировка кнопки синхронизации во время операции.
+
+ -- Anton Batenev <antonbatenev@yandex.ru>  Sat, 02 Jul 2016 23:25:16 +0300
+
 avalon2 (2.0.1) stable; urgency=low
 
   * Переключение на версию 2.0.1
