@@ -152,6 +152,11 @@ void AGlobal::reload ()
 	Compression = settings.value("storage/compression", false).toInt();
 #endif
 
+	m_rsdn_proto = settings.value("rsdn/proto",  "https").toString().toLower();
+	m_rsdn_host  = settings.value("rsdn/domain", "rsdn.org").toString().toLower();
+
+	m_rsdn_url = QString("%1://%2").arg(m_rsdn_proto).arg(m_rsdn_host);
+
 	// информация о текущем пользователе avalon
 	Me.ID             = -1;
 	Me.Name           = "(n/a)";

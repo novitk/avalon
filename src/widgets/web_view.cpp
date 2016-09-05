@@ -1,4 +1,6 @@
 #include "web_view.h"
+//----------------------------------------------------------------------------------------------
+#include "global.h"
 #include "webservice.h"
 //----------------------------------------------------------------------------------------------
 
@@ -146,7 +148,7 @@ void AWebView::menu_rsdn_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"https://" + AWebservice::rsdnDomain() + "/rsdnsearch?text=" + selected;
+	QString url = AGlobal::getInstance()->rsdnUrl() + "/rsdnsearch?text=" + selected;
 
 	QDesktopServices::openUrl(url);
 }

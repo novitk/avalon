@@ -1,5 +1,7 @@
 #include "webservice.h"
 //----------------------------------------------------------------------------------------------
+#include "global.h"
+//----------------------------------------------------------------------------------------------
 
 AWebservice::AWebservice (QWidget* parent, IProgress* progress) : QObject (parent)
 {
@@ -9,8 +11,6 @@ AWebservice::AWebservice (QWidget* parent, IProgress* progress) : QObject (paren
 
 	m_rsdn_login    = settings.value("rsdn/login",    "").toString();
 	m_rsdn_password = settings.value("rsdn/password", "").toString();
-	m_rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
-	m_rsdn_domain   = settings.value("rsdn/domain",   "rsdn.ru").toString();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ bool AWebservice::getForumList (AForumGroupInfoList& list)
 	data += "</soap:Envelope>\r\n";
 
 	QNetworkRequest request;
-	prepareRequest(request, m_rsdn_proto, "GetForumList", data.toUtf8().size());
+	prepareRequest(request, "GetForumList", data.toUtf8().size());
 
 	if (makeRequest(request, data) == false)
 		return false;
@@ -65,7 +65,7 @@ bool AWebservice::getUserList (const QString& last_row_version, AUserInfoList& l
 	data += "</soap:Envelope>\r\n";
 
 	QNetworkRequest request;
-	prepareRequest(request, m_rsdn_proto, "GetNewUsers", data.toUtf8().size());
+	prepareRequest(request, "GetNewUsers", data.toUtf8().size());
 
 	if (makeRequest(request, data) == false)
 		return false;
@@ -149,7 +149,7 @@ bool AWebservice::getMessageList (const ARowVersion& last_row_version, const ADa
 	data += "</soap:Envelope>\r\n";
 
 	QNetworkRequest request;
-	prepareRequest(request, m_rsdn_proto, "GetNewData", data.toUtf8().size());
+	prepareRequest(request, "GetNewData", data.toUtf8().size());
 
 	if (makeRequest(request, data) == false)
 		return false;
@@ -258,7 +258,7 @@ bool AWebservice::postChange (const AMessage2SendList& list_messages, const ARat
 	data += "</soap:Envelope>\r\n";
 
 	QNetworkRequest request;
-	prepareRequest(request, m_rsdn_proto, "PostChange", data.toUtf8().size());
+	prepareRequest(request, "PostChange", data.toUtf8().size());
 
 	if (makeRequest(request, data) == false)
 		return false;
@@ -280,7 +280,7 @@ bool AWebservice::postChange (const AMessage2SendList& list_messages, const ARat
 	data += "  </soap:Body>\r\n";
 	data += "</soap:Envelope>\r\n";
 
-	prepareRequest(request, m_rsdn_proto, "PostChangeCommit", data.toUtf8().size());
+	prepareRequest(request, "PostChangeCommit", data.toUtf8().size());
 
 	if (cookie.length() > 0)
 		request.setRawHeader("Cookie", cookie.toUtf8());
@@ -783,13 +783,13 @@ QString AWebservice::formatPrettyBytes (qint64 size)
 }
 //----------------------------------------------------------------------------------------------
 
-void AWebservice::prepareRequest (QNetworkRequest& request, const QString& proto, const QString& action, qint64 length)
+void AWebservice::prepareRequest (QNetworkRequest& request,const QString& action, qint64 length)
 {
-	request.setUrl(proto.toLower() + "://" + m_rsdn_domain + "/ws/janusAT.asmx");
+	request.setUrl(AGlobal::getInstance()->rsdnUrl() + "/ws/janusAT.asmx");
 
 	request.setHeader(QNetworkRequest::CookieHeader, QVariant());
 
-	request.setRawHeader("Host",           m_rsdn_domain.toUtf8());
+	request.setRawHeader("Host",           AGlobal::getInstance()->rsdnHost().toUtf8());
 	request.setRawHeader("Connection",     "close");
 	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
 	request.setRawHeader("Content-Type",   "text/xml; charset=utf-8");
@@ -944,4 +944,3 @@ void AWebservice::process_upload_progress (qint64 done, qint64 total)
 		m_progress->onProgress(0, total, done, QString::fromUtf8("отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 }
 //----------------------------------------------------------------------------------------------
-QString AWebservice::m_rsdn_domain("rsdn.ru");

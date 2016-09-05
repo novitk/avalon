@@ -46,6 +46,34 @@ class AGlobal
 
 		QString AnonymousName;   /*!< \brief Отображаемое имя анонима */
 		QString DateFormat;      /*!< \brief Формат даты/времени      */
+
+		/*!
+		 * \brief Протокол работы с сайтом rsdn (http|https)
+		 * \return Имя протокола http или https
+		 */
+		const QString& rsdnProto() const { return m_rsdn_proto; }
+
+		/*!
+		 * \brief Базовое имя хоста работы с сайтом rsdn
+		 * \return Имя хоста (rsdn.ru, rsdn.org, etc)
+		 */
+		const QString& rsdnHost() const { return m_rsdn_host; }
+
+		/*!
+		 * \brief Базовый URL работы с сайтом rsdn
+		 * \return URL вида https://rsdn.ru
+		 */
+		const QString& rsdnUrl() const { return m_rsdn_url; }
+
+	private:
+
+		//
+		// Сайт и вебсервис
+		//
+
+		QString m_rsdn_proto;   /*!< \brief Протокол (http|https) */
+		QString m_rsdn_host;    /*!< \brief Имя хоста для rsdn    */
+		QString m_rsdn_url;     /*!< \brief URL для rsdn          */
 };
 
 #endif   // _avalon_global_h_

@@ -69,12 +69,6 @@ class AWebservice : public QObject
 		QString error() { return m_error; }
 
 		/*!
-		 * \brief Получение доменного имени RSDN
-		 * \return Доменное имя RSDN
-		 */
-		static QString rsdnDomain() { return m_rsdn_domain; }
-
-		/*!
 		 * \brief Возвращает прокси-сервер по умолчанию
 		 * \param webkit Флаг запроса прокси для области отображения сообщений
 		 * \return Описатель прокси-сервера
@@ -112,16 +106,6 @@ class AWebservice : public QObject
 		 * \brief Пароль на rsdn
 		 */
 		QString m_rsdn_password;
-
-		/*!
-		 * \brief Протокол доступа к веб-сервису
-		 */
-		QString m_rsdn_proto;
-
-		/*!
-		 * \brief Доменное имя RSDN
-		 */
-		static QString m_rsdn_domain;
 
 	private:
 
@@ -209,11 +193,10 @@ class AWebservice : public QObject
 		/*!
 		 * \brief Подготовка полей запроса
 		 * \param request Запрос для заполнения
-		 * \param proto Протокол (http | https)
 		 * \param action Значение SOAPAction (без части http://rsdn.ru/Janus/)
 		 * \param length Значение Content-Length
 		 */
-		static void prepareRequest (QNetworkRequest& request, const QString& proto, const QString& action, qint64 length);
+		static void prepareRequest (QNetworkRequest& request, const QString& action, qint64 length);
 
 		/*!
 		 * \brief Выполнение запроса

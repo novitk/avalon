@@ -577,7 +577,7 @@ void AFormMain::menu_q_google_url_triggered ()
 
 void AFormMain::menu_q_rsdn_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("https://") + AWebservice::rsdnDomain());
+	QDesktopServices::openUrl(AGlobal::getInstance()->rsdnUrl());
 }
 //----------------------------------------------------------------------------------------------
 
