@@ -69,6 +69,12 @@ class AWebservice : public QObject
 		QString error() { return m_error; }
 
 		/*!
+		 * \brief Получение доменного имени RSDN
+		 * \return Доменное имя RSDN
+		 */
+		static QString rsdnDomain() { return m_rsdn_domain; }
+
+		/*!
 		 * \brief Возвращает прокси-сервер по умолчанию
 		 * \param webkit Флаг запроса прокси для области отображения сообщений
 		 * \return Описатель прокси-сервера
@@ -111,6 +117,11 @@ class AWebservice : public QObject
 		 * \brief Протокол доступа к веб-сервису
 		 */
 		QString m_rsdn_proto;
+
+		/*!
+		 * \brief Доменное имя RSDN
+		 */
+		static QString m_rsdn_domain;
 
 	private:
 

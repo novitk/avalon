@@ -3,6 +3,7 @@
 #include "global.h"
 #include "icon_effect.h"
 #include "tree_widget_item.h"
+#include "webservice.h"
 #include "forms/form_source.h"
 #include "forms/form_message.h"
 #include "forms/form_moderate.h"
@@ -1538,7 +1539,7 @@ void AMessageTree::processUrl (const QString& url)
 		// проверка на то, что URL является ссылкой на сообщение RSDN
 		// TODO: дополнить регэксп на ссылку вида https://rsdn.ru/forum/Message.aspx?mid=3900833&only=1
 		// пример встречается по ссылке https://rsdn.ru/forum/unix/3901241.1
-		QRegExp rsdn_url("^(https?://){0,1}((www|gzip)\\.){0,1}rsdn.ru/forum/.+/(\\d+)(\\.(1|flat|aspx)){0,1}", Qt::CaseInsensitive);
+		QRegExp rsdn_url(QString("^(https?://){0,1}((www|gzip)\\.){0,1}") + AWebservice::rsdnDomain() + "/forum/.+/(\\d+)(\\.(1|flat|aspx)){0,1}", Qt::CaseInsensitive);
 
 		if (rsdn_url.indexIn(external_url) == -1)
 			QDesktopServices::openUrl(external_url);

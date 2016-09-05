@@ -10,6 +10,7 @@ AWebservice::AWebservice (QWidget* parent, IProgress* progress) : QObject (paren
 	m_rsdn_login    = settings.value("rsdn/login",    "").toString();
 	m_rsdn_password = settings.value("rsdn/password", "").toString();
 	m_rsdn_proto    = settings.value("rsdn/proto",    "https").toString();
+	m_rsdn_domain   = settings.value("rsdn/domain",   "rsdn.ru").toString();
 }
 //----------------------------------------------------------------------------------------------
 
@@ -784,11 +785,11 @@ QString AWebservice::formatPrettyBytes (qint64 size)
 
 void AWebservice::prepareRequest (QNetworkRequest& request, const QString& proto, const QString& action, qint64 length)
 {
-	request.setUrl(proto.toLower() + "://rsdn.ru/ws/janusAT.asmx");
+	request.setUrl(proto.toLower() + "://" + m_rsdn_domain + "/ws/janusAT.asmx");
 
 	request.setHeader(QNetworkRequest::CookieHeader, QVariant());
 
-	request.setRawHeader("Host",           "rsdn.ru");
+	request.setRawHeader("Host",           m_rsdn_domain.toUtf8());
 	request.setRawHeader("Connection",     "close");
 	request.setRawHeader("User-Agent",     getAgentString().toUtf8());
 	request.setRawHeader("Content-Type",   "text/xml; charset=utf-8");
@@ -943,3 +944,4 @@ void AWebservice::process_upload_progress (qint64 done, qint64 total)
 		m_progress->onProgress(0, total, done, QString::fromUtf8("отправка ") + formatPrettyBytes(done) + "/" + formatPrettyBytes(total));
 }
 //----------------------------------------------------------------------------------------------
+QString AWebservice::m_rsdn_domain("rsdn.ru");

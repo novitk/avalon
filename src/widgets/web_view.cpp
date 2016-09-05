@@ -1,4 +1,5 @@
 #include "web_view.h"
+#include "webservice.h"
 //----------------------------------------------------------------------------------------------
 
 AWebView::AWebView (QWidget* parent) : QWebView (parent)
@@ -145,7 +146,7 @@ void AWebView::menu_rsdn_triggered ()
 {
 	QString selected = page()->selectedText();
 
-	QString url = (QString)"https://rsdn.ru/rsdnsearch?text=" + selected;
+	QString url = (QString)"https://" + AWebservice::rsdnDomain() + "/rsdnsearch?text=" + selected;
 
 	QDesktopServices::openUrl(url);
 }

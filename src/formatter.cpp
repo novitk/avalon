@@ -1,6 +1,7 @@
 #include "formatter.h"
 //----------------------------------------------------------------------------------------------
 #include "global.h"
+#include "webservice.h"
 //----------------------------------------------------------------------------------------------
 
 QString AFormatter::headHTML ()
@@ -61,9 +62,11 @@ QString AFormatter::subjectHTML (const AMessageInfo& message, const AForumInfo* 
 
 	if (forum != NULL)
 	{
+		QString rsdn_domain = AWebservice::rsdnDomain();
+
 		result +=
-			pad + "	<a id='move_to_thread' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
-			pad + "	<a id='subject' href='https://rsdn.ru/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + subject + "</a>\n";
+			pad + "	<a id='move_to_thread' href='https://" + rsdn_domain + "/forum/" + forum->ShortName + "/" + QString::number(message.ID) + QString::fromUtf8("'><img src='qrc:/icons/show_topic.png' title='показать положение в теме' /></a>\n") +
+			pad + "	<a id='subject' href='https://" + rsdn_domain + "/forum/" + forum->ShortName + "/" + QString::number(message.ID) + ".1'>" + subject + "</a>\n";
 	}
 	else
 		result += pad + "<p id='subject'>" + subject + "</p>\n";
@@ -109,7 +112,7 @@ QString AFormatter::authorHTML (int id, const QString nick)
 	if (id == 0 || id == -1)
 		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'>") + nick + "</div><br />\n";
 	else
-		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='https://rsdn.ru/account/info/") + QString::number(id) + "'>" + nick + "</a></div><br />\n";
+		result += pad + QString::fromUtf8("<div class='info_left'>От:</div><div class='info_right'><a href='https://") + AWebservice::rsdnDomain() + "/account/info/" + QString::number(id) + "'>" + nick + "</a></div><br />\n";
 
 	return result;
 }
@@ -183,7 +186,7 @@ QString AFormatter::ratingHTML (int id, const AMessageRatingList* rating_list)
 			;
 
 	QString pad = "			";
-	QString ratingLinkOpen = "<a id='rating' title='"+all_rate_details+"' href='https://rsdn.ru/forum/RateList.aspx?mid=" + QString::number(id) + "'>";
+	QString ratingLinkOpen = "<a id='rating' title='"+all_rate_details+"' href='https://" + AWebservice::rsdnDomain() + "/forum/RateList.aspx?mid=" + QString::number(id) + "'>";
 	result +=
 		pad + ratingLinkOpen + "<span class='info_left'>" + QString::fromUtf8("Оценки:</span>\n") +
 		pad + "<span class='info_right'>\n";

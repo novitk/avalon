@@ -577,7 +577,7 @@ void AFormMain::menu_q_google_url_triggered ()
 
 void AFormMain::menu_q_rsdn_url_triggered ()
 {
-	QDesktopServices::openUrl(QString("https://rsdn.ru"));
+	QDesktopServices::openUrl(QString("https://") + AWebservice::rsdnDomain());
 }
 //----------------------------------------------------------------------------------------------
 
@@ -595,6 +595,7 @@ void AFormMain::menu_q_about_triggered ()
 		"<li><a href='http://ua-coder.blogspot.com/'>Anatoliy</a></li>"
 		"<li><a href='https://github.com/astavonin'>Alexander Stavonin</a></li>"
 		"<li><a href='https://github.com/kan-izh'>kan-izh</a></li>"
+		"<li><a href='http://zarezky.spb.ru/'>Elijah Zarezky</a></li>"
 		"</ul>"
 	);
 
