@@ -149,6 +149,7 @@ void FormSettings::save ()
 	//
 
 	settings.setValue("rsdn/proto",    m_combo_rsdn_proto->currentText());
+	settings.setValue("rsdn/host",     m_combo_rsdn_host->currentText());
 	settings.setValue("rsdn/login",    m_text_rsdn_login->text());
 	settings.setValue("rsdn/password", m_text_rsdn_password->text());
 
@@ -193,7 +194,8 @@ void FormSettings::restore ()
 	//
 	// сеть
 	//
-	QString rsdn_proto = settings.value("rsdn/proto", "HTTPS").toString();
+
+	QString rsdn_proto = settings.value("rsdn/proto", AGlobal::getInstance()->rsdnProto()).toString();
 
 	int idx = m_combo_rsdn_proto->findText(rsdn_proto);
 
@@ -201,6 +203,15 @@ void FormSettings::restore ()
 		m_combo_rsdn_proto->setCurrentIndex(idx);
 	else
 		m_combo_rsdn_proto->setCurrentIndex(0);
+
+	QString rsdn_host = settings.value("rsdn/host", AGlobal::getInstance()->rsdnHost()).toString();
+
+	idx = m_combo_rsdn_host->findText(rsdn_host);
+
+	if (idx != -1)
+		m_combo_rsdn_host->setCurrentIndex(idx);
+	else
+		m_combo_rsdn_host->setCurrentIndex(0);
 
 	m_text_rsdn_login->setText    (settings.value("rsdn/login",    "").toString());
 	m_text_rsdn_password->setText (settings.value("rsdn/password", "").toString());

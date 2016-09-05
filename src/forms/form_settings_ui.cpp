@@ -15,7 +15,7 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	icon.addFile(":/icons/settings128.png", QSize(128, 128));
 	setWindowIcon(icon);
 
-	resize(560, 366);
+	resize(560, 396);
 	setFixedSize(width(), height());
 
 	//
@@ -58,6 +58,10 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_label_rsdn_proto = new QLabel(this);
 	m_label_rsdn_proto->setText(QString::fromUtf8("протокол"));
 	m_layout_label_network->addWidget(m_label_rsdn_proto);
+
+	m_label_rsdn_host = new QLabel(this);
+	m_label_rsdn_host->setText(QString::fromUtf8("хост"));
+	m_layout_label_network->addWidget(m_label_rsdn_host);
 
 	m_label_rsdn_login = new QLabel(this);
 	m_label_rsdn_login->setText(QString::fromUtf8("логин"));
@@ -103,9 +107,14 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_network->addLayout(m_layout_text_network);
 
 	m_combo_rsdn_proto = new QComboBox(this);
-	m_combo_rsdn_proto->insertItem(0, "HTTPS");
-	m_combo_rsdn_proto->insertItem(0, "HTTP");
+	m_combo_rsdn_proto->insertItem(0, "http");
+	m_combo_rsdn_proto->insertItem(1, "https");
 	m_layout_text_network->addWidget(m_combo_rsdn_proto);
+
+	m_combo_rsdn_host = new QComboBox(this);
+	m_combo_rsdn_host->insertItem(0, "rsdn.ru");
+	m_combo_rsdn_host->insertItem(1, "rsdn.org");
+	m_layout_text_network->addWidget(m_combo_rsdn_host);
 
 	m_text_rsdn_login = new QLineEdit(this);
 	m_layout_text_network->addWidget(m_text_rsdn_login);
