@@ -682,7 +682,7 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 	data.replace(tagline,   "");
 	data.replace(moderator, "");
 
-	// удаляем img с даными вместо ссылки (например, см. https://rsdn.ru/forum/flame.comp/4077971.1)
+	// удаляем img с даными вместо ссылки (например, см. https://rsdn.org/forum/flame.comp/4077971.1)
 	QRegExp img1("\\[img\\]data:(\\S+)\\[/img\\]", Qt::CaseInsensitive);
 	img1.setMinimal(true);
 	data.replace(img1, "");
@@ -692,7 +692,7 @@ QString AFormatter::normalizeBody (const QString& body, const QString& nick)
 	img2.setMinimal(true);
 	data.replace(img2, QString::fromUtf8("[url=\\1]\\1[/url]"));
 
-	// укорачивание длинных ссылок (например, см. https://rsdn.ru/forum/web/4086359.1)
+	// укорачивание длинных ссылок (например, см. https://rsdn.org/forum/web/4086359.1)
 	QRegExp url1("\\[url=data:(\\S+)\\](.+)\\[/url\\]", Qt::CaseInsensitive);
 	url1.setMinimal(true);
 	data.replace(url1, "[url=bad%20link]\\2[/url]");

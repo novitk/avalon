@@ -193,7 +193,7 @@ class AWebservice : public QObject
 		/*!
 		 * \brief Подготовка полей запроса
 		 * \param request Запрос для заполнения
-		 * \param action Значение SOAPAction (без части http://rsdn.ru/Janus/)
+		 * \param action Значение SOAPAction (без части proto://host/Janus/)
 		 * \param length Значение Content-Length
 		 */
 		static void prepareRequest (QNetworkRequest& request, const QString& action, qint64 length);
