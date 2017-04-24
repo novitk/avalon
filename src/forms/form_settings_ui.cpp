@@ -112,8 +112,8 @@ FormSettingsUI::FormSettingsUI (QWidget* parent) : QDialog (parent, Qt::WindowTi
 	m_layout_text_network->addWidget(m_combo_rsdn_proto);
 
 	m_combo_rsdn_host = new QComboBox(this);
-	m_combo_rsdn_host->insertItem(0, "rsdn.ru");
-	m_combo_rsdn_host->insertItem(1, "rsdn.org");
+	m_combo_rsdn_host->insertItem(0, "rsdn.org");
+	m_combo_rsdn_host->insertItem(1, "rsdn.ru");
 	m_layout_text_network->addWidget(m_combo_rsdn_host);
 
 	m_text_rsdn_login = new QLineEdit(this);

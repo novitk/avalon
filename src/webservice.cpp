@@ -349,7 +349,7 @@ void AWebservice::parseForumList (const QString& data, AForumGroupInfoList& list
 
 	QString group_info = getNextBlock(&data, "<JanusForumGroupInfo>", "</JanusForumGroupInfo>", seed);
 
-	while (group_info.length())
+	while (group_info.length() > 0)
 	{
 		AGroupInfo info;
 
@@ -372,7 +372,7 @@ void AWebservice::parseForumList (const QString& data, AForumGroupInfoList& list
 
 	QString forum_info = getNextBlock(&data, "<JanusForumInfo>", "</JanusForumInfo>", seed);
 
-	while (forum_info.length())
+	while (forum_info.length() > 0)
 	{
 		AForumInfo info;
 
@@ -418,7 +418,7 @@ QString AWebservice::parseUserList (const QString& data, AUserInfoList& list, QS
 
 	QString user_info = getNextBlock(&data, "<JanusUserInfo>", "</JanusUserInfo>", seed);
 
-	while (user_info.length())
+	while (user_info.length() > 0)
 	{
 		AUserInfo info;
 
@@ -460,7 +460,7 @@ QString AWebservice::parseMessageList (const QString& data, ADataList& list, ARo
 
 	QString message_info = getNextBlock(&data, "<JanusMessageInfo>", "</JanusMessageInfo>", seed);
 
-	while (message_info.length())
+	while (message_info.length() > 0)
 	{
 		AMessageInfo info;
 
@@ -500,7 +500,7 @@ QString AWebservice::parseMessageList (const QString& data, ADataList& list, ARo
 
 	QString rating_info = getNextBlock(&data, "<JanusRatingInfo>", "</JanusRatingInfo>", seed);
 
-	while (rating_info.length())
+	while (rating_info.length() > 0)
 	{
 		ARatingInfo info;
 
@@ -523,7 +523,7 @@ QString AWebservice::parseMessageList (const QString& data, ADataList& list, ARo
 
 	QString moderate_info = getNextBlock(&data, "<JanusModerateInfo>", "</JanusModerateInfo>", seed);
 
-	while (moderate_info.length())
+	while (moderate_info.length() > 0)
 	{
 		AModerateInfo info;
 
@@ -542,11 +542,11 @@ QString AWebservice::parseMessageList (const QString& data, ADataList& list, ARo
 	}
 
 	seed = 0;
-        QString lastRatingRowVersion   = getNextBlock(&data, "<lastRatingRowVersion>",   "</lastRatingRowVersion>",   seed);
+	QString lastRatingRowVersion   = getNextBlock(&data, "<lastRatingRowVersion>",   "</lastRatingRowVersion>",   seed);
 	seed = 0;
-        QString lastForumRowVersion    = getNextBlock(&data, "<lastForumRowVersion>",    "</lastForumRowVersion>",    seed);
+	QString lastForumRowVersion    = getNextBlock(&data, "<lastForumRowVersion>",    "</lastForumRowVersion>",    seed);
 	seed = 0;
-        QString lastModerateRowVersion = getNextBlock(&data, "<lastModerateRowVersion>", "</lastModerateRowVersion>", seed);
+	QString lastModerateRowVersion = getNextBlock(&data, "<lastModerateRowVersion>", "</lastModerateRowVersion>", seed);
 
 	// проверка ошибок получения версий строк
 	// подавлять ошибки сбросом в значение по умолчанию ("AAAAAAAAAAA=") оказалось неправильно
@@ -606,7 +606,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	QString id_info = getNextBlock(&messages, "<int>", "</int>", seed);
 
-	while (id_info.length())
+	while (id_info.length() > 0)
 	{
 		commit_info.Messages.append(id_info.toInt());
 
@@ -619,7 +619,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	QString message_exception_info = getNextBlock(&message_exceptions, "<PostExceptionInfo>", "</PostExceptionInfo>", seed);
 
-	while (message_exception_info.length())
+	while (message_exception_info.length() > 0)
 	{
 		ACommitExceptionInfo info;
 
@@ -638,7 +638,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	id_info = getNextBlock(&ratings, "<int>", "</int>", seed);
 
-	while (id_info.length())
+	while (id_info.length() > 0)
 	{
 		commit_info.Rating.append(id_info.toInt());
 
@@ -651,7 +651,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	QString rating_exception_info = getNextBlock(&rating_exceptions, "<RatingExceptionInfo>", "</RatingExceptionInfo>", seed);
 
-	while (rating_exception_info.length())
+	while (rating_exception_info.length() > 0)
 	{
 		ACommitExceptionInfo info;
 
@@ -670,7 +670,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	id_info = getNextBlock(&moderates, "<int>", "</int>", seed);
 
-	while (id_info.length())
+	while (id_info.length() > 0)
 	{
 		commit_info.Moderate.append(id_info.toInt());
 
@@ -683,7 +683,7 @@ QString AWebservice::parsePostChangeCommit (const QString& data, ACommitInfo& co
 
 	QString moderate_exception_info = getNextBlock(&moderate_exceptions, "<ModerateExceptionInfo>", "</ModerateExceptionInfo>", seed);
 
-	while (moderate_exception_info.length())
+	while (moderate_exception_info.length() > 0)
 	{
 		ACommitExceptionInfo info;
 
