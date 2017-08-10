@@ -7,6 +7,8 @@
 #include "forms/form_message.h"
 #include "forms/form_moderate.h"
 #include "storage/storage_factory.h"
+
+#include <QShortcut>
 //----------------------------------------------------------------------------------------------
 /*!
  * \brief Максимальная длина истории для навигации Вперед / Назад
@@ -151,6 +153,10 @@ AMessageTree::AMessageTree (QWidget* parent, QWidget* form) : QTreeWidget (paren
 	connect(m_menu_mark_message_as_unread, SIGNAL(triggered()), this, SLOT(menu_mark_message_as_unread_triggered()));
 	connect(m_menu_mark_thread_as_read,    SIGNAL(triggered()), this, SLOT(menu_mark_thread_as_read_triggered()));
 	connect(m_menu_mark_thread_as_unread,  SIGNAL(triggered()), this, SLOT(menu_mark_thread_as_unread_triggered()));
+	m_menu_mark_thread_as_read->setShortcut(QKeySequence("R"));
+	m_menu_mark_thread_as_unread->setShortcut(QKeySequence("Shift+R"));
+	new QShortcut(m_menu_mark_thread_as_read->shortcut(), this, SLOT(menu_mark_thread_as_read_triggered()));
+	new QShortcut(m_menu_mark_thread_as_unread->shortcut(), this, SLOT(menu_mark_thread_as_unread_triggered()));
 
 	//
 	// события спец-меню
@@ -180,6 +186,7 @@ AMessageTree::AMessageTree (QWidget* parent, QWidget* form) : QTreeWidget (paren
 
 	// событие таймера отметки как прочитанное
 	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timer_on_timer()));
+
 }
 //----------------------------------------------------------------------------------------------
 
@@ -244,8 +251,8 @@ void AMessageTree::context_menu_request (const QPoint& pos)
 		else
 		{
 			if (m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND  ||
-			    m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
-			    m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
+				m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+				m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
 			   )
 			{
 				m_menu_special_edit->setVisible(true);
@@ -851,9 +858,9 @@ void AMessageTree::selection_changed ()
 	if (m_current_forum.IDGroup != SPECIAL_ID_GROUP)
 		m_message_view->setMessage(*info, &m_current_forum);
 	else if (m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
-	         m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
-	         m_current_forum.ID == SPECIAL_ID_FORUM_MY_MESSAGES   ||
-	         m_current_forum.ID == SPECIAL_ID_FORUM_ANSWERS_TO_ME)
+			 m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+			 m_current_forum.ID == SPECIAL_ID_FORUM_MY_MESSAGES   ||
+			 m_current_forum.ID == SPECIAL_ID_FORUM_ANSWERS_TO_ME)
 	{
 		// в спец-форумах типа "Ответы мне" короткое имя форума
 		// для формирования ссылки на сообщение неизвестно - получаем из хранилища
@@ -1256,7 +1263,7 @@ void AMessageTree::menu_mark_thread_as_read_triggered ()
                 // поскольку дочерние элементы еще не загружены,
                 // обновление количества непрочитаных в дереве форума
                 m_forum_tree->reloadUnread(false);
-	}
+    }
 }
 //----------------------------------------------------------------------------------------------
 
@@ -2047,9 +2054,9 @@ void AMessageTree::menu_special_delete_triggered ()
 		return;
 
 	if (!(m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND  ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
+		  m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
 	))
 		return;
 
@@ -2081,9 +2088,9 @@ void AMessageTree::item_double_clicked (QTreeWidgetItem* item, int /*column*/)
 	setCurrentItem(item);
 
 	if (!(m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND  ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
+		  m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
 	))
 		return;
 
@@ -2099,9 +2106,9 @@ void AMessageTree::menu_special_edit_triggered ()
 		return;
 
 	if (!(m_current_forum.ID == SPECIAL_ID_FORUM_MESSAGE2SEND  ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
-	      m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
+		  m_current_forum.ID == SPECIAL_ID_FORUM_RATING2SEND   ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_MODERATE2SEND ||
+		  m_current_forum.ID == SPECIAL_ID_FORUM_DRAFTS
 	))
 		return;
 
