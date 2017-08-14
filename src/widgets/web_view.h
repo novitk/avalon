@@ -41,6 +41,8 @@ class AWebView : public QWebView
 		 */
 		bool LinkHovered;
 
+		bool movePage();
+
 	protected:
 
 		/*!

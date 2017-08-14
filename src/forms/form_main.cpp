@@ -38,6 +38,7 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	connect(m_menu_goto_next_unread_thread,  SIGNAL(triggered()), this, SLOT(menu_goto_next_unread_thread_triggered()));
 	connect(m_menu_goto_next_unread_forum,   SIGNAL(triggered()), this, SLOT(menu_goto_next_unread_forum_triggered()));
 	connect(m_menu_goto_by_id,               SIGNAL(triggered()), this, SLOT(menu_goto_by_id_triggered()));
+	connect(m_menu_goto_next_smart,          SIGNAL(triggered()), this, SLOT(menu_goto_next_smart()));
 
 	//
 	// меню "Сервис"
@@ -624,6 +625,23 @@ void AFormMain::menu_goto_next_unread_forum_triggered ()
 }
 //----------------------------------------------------------------------------------------------
 
+
+void AFormMain::menu_goto_next_smart()
+{
+	if(m_message_view->View->movePage())
+		return;
+	if(m_menu_goto_next_unread_article->isEnabled())
+	{
+		m_message_tree->gotoNextUnreadArticle();
+		return;
+	}
+	if(m_menu_goto_next_unread_forum->isEnabled())
+	{
+		m_forum_tree->gotoNextUnreadForum();
+		return;
+	}
+}
+
 void AFormMain::menu_goto_by_id_triggered ()
 {
 	std::auto_ptr<FormInput> form(new FormInput(this, QString::fromUtf8("Перейти к сообщению"), QString::fromUtf8("Введите URL или номер сообщения / ветки"), ""));
@@ -702,6 +720,7 @@ void AFormMain::menu_goto_by_id_triggered ()
 		}
 	}
 }
+
 //----------------------------------------------------------------------------------------------
 
 void AFormMain::showStatus (const QString& value)
