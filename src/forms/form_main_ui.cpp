@@ -99,6 +99,10 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 	m_menu_goto_next_unread_forum->setShortcut(QString("F"));
 	m_menu_goto_next_unread_forum->setEnabled(false);
 
+	m_menu_goto_next_smart = m_menu_goto->addAction(QString::fromUtf8("Читать далее"));
+	m_menu_goto_next_smart->setShortcut(QString("Space"));
+
+
 	m_menu_service->addSeparator();
 
 	m_menu_goto_by_id = m_menu_goto->addAction(QString::fromUtf8("Перейти к сообщению"));
