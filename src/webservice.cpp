@@ -820,7 +820,7 @@ bool AWebservice::makeRequest(const QNetworkRequest& request, const QString& dat
 
 	QEventLoop loop;
 	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-    loop.exec();
+	loop.exec();
 
 	bool result = parseReply(reply);
 

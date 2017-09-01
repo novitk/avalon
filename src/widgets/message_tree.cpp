@@ -1210,8 +1210,8 @@ void AMessageTree::menu_mark_thread_as_read_triggered ()
 		if (markThreadAsRead(id_topic, true) != true)
 			return;
 
-                // обновление количества непрочитаных в дереве форума с перезагрузкой
-                m_forum_tree->reloadUnread(true);
+		// обновление количества непрочитаных в дереве форума с перезагрузкой
+		m_forum_tree->reloadUnread(true);
 
 		// переход на выделенное
 		QList<int> path;
