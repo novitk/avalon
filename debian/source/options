@@ -12,6 +12,7 @@ tar-ignore = PKGBUILD
 tar-ignore = avalon2.spec
 tar-ignore = build.linux.sh
 tar-ignore = build.mingw.bat
+tar-ignore = build2.mingw.bat
 tar-ignore = build.msvc.bat
 tar-ignore = update.txt
 tar-ignore = src/resource.rc
