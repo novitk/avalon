@@ -2,7 +2,6 @@
 //----------------------------------------------------------------------------------------------
 #include "global.h"
 #include "webservice.h"
-#include <QWebFrame>
 //----------------------------------------------------------------------------------------------
 
 AWebView::AWebView (QWidget* parent) : QWebView (parent)
@@ -48,14 +47,18 @@ void AWebView::keyPressEvent (QKeyEvent* event)
 }
 //----------------------------------------------------------------------------------------------
 
-bool AWebView::movePage()
+bool AWebView::canScrollPage ()
 {
-	const QWebFrame *frame = page()->mainFrame();
-	const QPoint currentScrollPos = frame->scrollPosition();
+	return (page()->mainFrame()->scrollBarValue(Qt::Vertical) != page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+}
+//----------------------------------------------------------------------------------------------
+
+void AWebView::scrollPage ()
+{
 	QKeyEvent event(QEvent::KeyPress, Qt::Key_Space, Qt::NoModifier);
 	keyPressEvent(&event);
-	return frame->scrollPosition() != currentScrollPos;
 }
+//----------------------------------------------------------------------------------------------
 
 void AWebView::contextMenuEvent (QContextMenuEvent* event)
 {

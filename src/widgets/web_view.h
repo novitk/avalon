@@ -41,7 +41,16 @@ class AWebView : public QWebView
 		 */
 		bool LinkHovered;
 
-		bool movePage();
+		/*!
+		 * \brief Проверка возможности прокрутки страницы сообщения
+		 * \return Флаг возможности скрола сообщения
+		 */
+		bool canScrollPage ();
+
+		/*!
+		 * \brief Прокрутка страницы сообщения
+		 */
+		void scrollPage ();
 
 	protected:
 

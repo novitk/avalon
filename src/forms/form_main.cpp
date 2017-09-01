@@ -625,22 +625,19 @@ void AFormMain::menu_goto_next_unread_forum_triggered ()
 }
 //----------------------------------------------------------------------------------------------
 
-
 void AFormMain::menu_goto_next_smart()
 {
-	if(m_message_view->View->movePage())
-		return;
-	if(m_menu_goto_next_unread_article->isEnabled())
-	{
+	if (m_message_view->View->canScrollPage() == true)
+		m_message_view->View->scrollPage();
+	else if (m_menu_goto_next_unread_article->isEnabled() == true)
 		m_message_tree->gotoNextUnreadArticle();
-		return;
-	}
-	if(m_menu_goto_next_unread_forum->isEnabled())
+	else if (m_menu_goto_next_unread_forum->isEnabled() == true)
 	{
 		m_forum_tree->gotoNextUnreadForum();
-		return;
+		m_message_tree->gotoNextUnreadArticle();
 	}
 }
+//----------------------------------------------------------------------------------------------
 
 void AFormMain::menu_goto_by_id_triggered ()
 {
@@ -755,6 +752,12 @@ void AFormMain::setEnabledAction (AvalonActions action, bool enabled)
 		m_tool_bar_backward->setEnabled(enabled);
 	else if (action == aaForward)
 		m_tool_bar_forward->setEnabled(enabled);
+
+	if (action == aaPrevNextUnreadArticle || action == aaPrevNextUnreadForum)
+	{
+		enabled = (m_menu_goto_next_unread_article->isEnabled() == true || m_menu_goto_next_unread_forum->isEnabled() == true);
+		m_menu_goto_next_smart->setEnabled(enabled);
+	}
 }
 //----------------------------------------------------------------------------------------------
 

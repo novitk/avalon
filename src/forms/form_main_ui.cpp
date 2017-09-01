@@ -101,7 +101,7 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 
 	m_menu_goto_next_smart = m_menu_goto->addAction(QString::fromUtf8("Читать далее"));
 	m_menu_goto_next_smart->setShortcut(QString("Space"));
-
+	m_menu_goto_next_smart->setEnabled(false);
 
 	m_menu_service->addSeparator();
 
