@@ -61,6 +61,8 @@ class AFormMainUI : public QMainWindow
 		QAction*        m_menu_service_download;                 /*!< \brief Сервис / Загрузить сообщение/ветку             */
 		QAction*        m_menu_service_new_message;              /*!< \brief Сервис / Новое сообщение                       */
 		QAction*        m_menu_service_reply;                    /*!< \brief Сервис / Ответить на сообщение                 */
+		QAction*        m_menu_service_mark_thread_as_read;      /*!< \brief Сервис / Пометить ветку как прочитанную        */
+		QAction*        m_menu_service_mark_thread_as_unread;    /*!< \brief Сервис / Пометить ветку как не прочитанную     */
 		QAction*        m_menu_service_mark_all_as_read;         /*!< \brief Сервис / Пометить все как непрочитанные        */
 		QAction*        m_menu_service_mark_patrial_as_read;     /*!< \brief Сервис / Пометить до даты как прочитанные      */
 		QAction*        m_menu_service_mark_all_as_unread;       /*!< \brief Сервис / Пометить все как непрочитанные        */

@@ -105,6 +105,8 @@ class AFormMain :
 		void menu_service_download_triggered               ();   /*!< \brief Сервис / Загрузить сообщение / ветку           */
 		void menu_service_new_message_triggered            ();   /*!< \brief Сервис / Новое сообщение                       */
 		void menu_service_reply_triggered                  ();   /*!< \brief Сервис / Ответить                              */
+		void menu_service_mark_thread_as_read_triggered    ();   /*!< \brief Сервис / Пометить ветку как прочитанную        */
+		void menu_service_mark_thread_as_unread_triggered  ();   /*!< \brief Сервис / Пометить ветку как не прочитанную     */
 		void menu_service_mark_all_as_read_triggered       ();   /*!< \brief Сервис / Пометить все как прочитанные          */
 		void menu_service_mark_patrial_as_read_triggered   ();   /*!< \brief Сервис / Пометить до даты как прочитанные      */
 		void menu_service_mark_all_as_unread_triggered     ();   /*!< \brief Сервис / Пометить все как непрочитанные        */

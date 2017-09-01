@@ -48,6 +48,8 @@ AFormMain::AFormMain () : AFormMainUI (), IFormMain ()
 	connect(m_menu_service_download,               SIGNAL(triggered()), this, SLOT(menu_service_download_triggered()));
 	connect(m_menu_service_new_message,            SIGNAL(triggered()), this, SLOT(menu_service_new_message_triggered()));
 	connect(m_menu_service_reply,                  SIGNAL(triggered()), this, SLOT(menu_service_reply_triggered()));
+	connect(m_menu_service_mark_thread_as_read,    SIGNAL(triggered()), this, SLOT(menu_service_mark_thread_as_read_triggered()));
+	connect(m_menu_service_mark_thread_as_unread,  SIGNAL(triggered()), this, SLOT(menu_service_mark_thread_as_unread_triggered()));
 	connect(m_menu_service_mark_all_as_read,       SIGNAL(triggered()), this, SLOT(menu_service_mark_all_as_read_triggered()));
 	connect(m_menu_service_mark_patrial_as_read,   SIGNAL(triggered()), this, SLOT(menu_service_mark_patrial_as_read_triggered()));
 	connect(m_menu_service_mark_all_as_unread,     SIGNAL(triggered()), this, SLOT(menu_service_mark_all_as_unread_triggered()));
@@ -404,6 +406,18 @@ void AFormMain::menu_service_reply_triggered ()
 }
 //----------------------------------------------------------------------------------------------
 
+void AFormMain::menu_service_mark_thread_as_read_triggered ()
+{
+	m_message_tree->markThreadAsRead();
+}
+//----------------------------------------------------------------------------------------------
+
+void AFormMain::menu_service_mark_thread_as_unread_triggered ()
+{
+	m_message_tree->markThreadAsUnread();
+}
+//----------------------------------------------------------------------------------------------
+
 void AFormMain::menu_service_mark_all_as_read_triggered ()
 {
 	// получение хранилища
@@ -736,11 +750,15 @@ void AFormMain::setEnabledAction (AvalonActions action, bool enabled)
 		m_menu_service_new_message->setEnabled(enabled);
 		m_tool_bar_new_message->setEnabled(enabled);
 		m_menu_service_reply->setEnabled(m_menu_view_source->isEnabled());
+		m_menu_service_mark_thread_as_read->setEnabled(m_menu_view_source->isEnabled());
+		m_menu_service_mark_thread_as_unread->setEnabled(m_menu_view_source->isEnabled());
 	}
 	else if (action == aaViewSource)
 	{
 		m_menu_view_source->setEnabled(enabled);
 		m_menu_service_reply->setEnabled(m_menu_service_new_message->isEnabled());
+		m_menu_service_mark_thread_as_read->setEnabled(m_menu_service_new_message->isEnabled());
+		m_menu_service_mark_thread_as_unread->setEnabled(m_menu_service_new_message->isEnabled());
 	}
 	else if (action == aaPrevNextUnreadArticle)
 		m_menu_goto_next_unread_article->setEnabled(enabled);

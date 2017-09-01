@@ -132,6 +132,18 @@ AFormMainUI::AFormMainUI () : QMainWindow ()
 
 	m_menu_service->addSeparator();
 
+	m_menu_service_mark_thread_as_read = m_menu_service->addAction(QString::fromUtf8("Пометить ветку как прочитанную"));
+	m_menu_service_mark_thread_as_read->setIcon(QIcon(":/icons/markpatrialasread16.png"));
+	m_menu_service_mark_thread_as_read->setShortcut(QString("CTRL+S"));
+	m_menu_service_mark_thread_as_read->setEnabled(false);
+
+	m_menu_service_mark_thread_as_unread = m_menu_service->addAction(QString::fromUtf8("Пометить ветку как непрочитанную"));
+	m_menu_service_mark_thread_as_unread->setIcon(QIcon(":/icons/markpatrialasunread16.png"));
+	m_menu_service_mark_thread_as_unread->setShortcut(QString("CTRL+U"));
+	m_menu_service_mark_thread_as_unread->setEnabled(false);
+
+	m_menu_service->addSeparator();
+
 	m_menu_service_mark_all_as_read = m_menu_service->addAction(QString::fromUtf8("Пометить все, как прочитанные"));
 	m_menu_service_mark_all_as_read->setIcon(QIcon(":/icons/markallasread16.png"));
 

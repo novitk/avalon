@@ -246,6 +246,9 @@ class AMessageTree :
 
 		void reply ();
 
+		void markThreadAsRead ();
+		void markThreadAsUnread ();
+
 	// IMessageInfoGUIFactory
 	private:
 
