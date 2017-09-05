@@ -1723,7 +1723,7 @@ void AMessageTree::gotoNextUnreadArticle (QTreeWidgetItem* current_item)
 
 		info = item->pag();
 
-		// если найденый топик с незагруженной информацией
+		// если найденый топик с незагруженой информацией
 		if (info->IsInfoLoaded == false)
 		{
 			if (loopback == true)
@@ -2011,7 +2011,7 @@ void AMessageTree::gotoNextUnreadThread ()
 
 		info = item->pag();
 
-		// если найденый топик с незагруженной информацией
+		// если найденый топик с незагруженой информацией
 		if (info->IsInfoLoaded == false)
 		{
 			if (loopback == true)
