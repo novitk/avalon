@@ -27,12 +27,16 @@ Offile client for Russian Software Developer Network
 %build
 export builddir=$(pwd)
 
-qmake-qt5 -project -recursive -Wall -nopwd -o avalon.pro \
-    "CONFIG += release"                                  \
-    "QT += network sql core widgets webkitwidgets"       \
-    "INCLUDEPATH += src"                                 \
-    "DEFINES += AVALON_PACKAGE"                          \
-    "LIBS += -laspell -lz"                               \
+qmake-qt5 -project -recursive -Wall -nopwd -o avalon.pro       \
+    "CONFIG         += release"                                \
+    "QT             += network sql core widgets webkitwidgets" \
+    "INCLUDEPATH    += src"                                    \
+    "DEFINES        += AVALON_PACKAGE"                         \
+    "LIBS           += -laspell -lz"                           \
+    "QMAKE_CPPFLAGS *= ${RPM_OPT_FLAGS}"                       \
+    "QMAKE_CFLAGS   *= ${RPM_OPT_FLAGS}"                       \
+    "QMAKE_CXXFLAGS *= ${RPM_OPT_FLAGS}"                       \
+    "QMAKE_LFLAGS   *= ${RPM_LD_FLAGS}"                        \
     "${builddir}/src"
 qmake-qt5 avalon.pro
 make %{?_smp_mflags}
