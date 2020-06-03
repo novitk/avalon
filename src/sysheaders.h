@@ -68,6 +68,7 @@
 #include <QNetworkReply>
 #include <QDesktopWidget>
 #include <QTemporaryFile>
+#include <QScopedPointer>
 #include <QNetworkRequest>
 #include <QCalendarWidget>
 #include <QDesktopServices>
