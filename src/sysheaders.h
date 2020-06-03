@@ -117,13 +117,13 @@ int getBuildNumber ();
 
 /*!
  * \brief Получение строки версии (см. version.cpp)
- * \return Строка версии вида "2.0.NNN"
+ * \return Строка версии вида "3.0.NNN"
  */
 QString getVersionString ();
 
 /*!
  * \brief Получение строки имени агента (см. version.cpp)
- * \return Строка агента вида "avalon/2.0.NNN (<url>)"
+ * \return Строка агента вида "avalon/3.0.NNN (<url>)"
  */
 QString getAgentString ();
 

@@ -14,11 +14,7 @@ AQuery::~AQuery ()
 
 QString AQuery::getLastError ()
 {
-#if QT_VERSION < 0x050300
-	return lastError().databaseText() + "\n" + lastError().driverText() + "\n" + QString::fromUtf8("Ошибка: ") + QString::number(lastError().number());
-#else
 	return lastError().databaseText() + "\n" + lastError().driverText() + "\n" + QString::fromUtf8("Ошибка: ") + lastError().nativeErrorCode();
-#endif
 }
 //----------------------------------------------------------------------------------------------
 

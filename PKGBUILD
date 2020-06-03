@@ -1,7 +1,7 @@
 # Maintainer: Anton Batenev <antonbatenev@yandex.ru>
 
-pkgname=('avalon2')
-pkgver=2.0.7
+pkgname=('avalon3')
+pkgver=3.0.0
 pkgrel=1
 pkgdesc="RSDN offline client"
 arch=('i686' 'x86_64')
@@ -19,12 +19,12 @@ build() {
 
     PWD=$(pwd)
 
-    qmake-qt5 -project -recursive -Wall -nopwd -o "avalon.pro" \
-        "CONFIG += release"                                    \
-        "QT += network sql core widgets webkitwidgets"         \
-        "INCLUDEPATH += src"                                   \
-        "DEFINES += AVALON_PACKAGE"                            \
-        "LIBS += -laspell -lz"                                 \
+    qmake-qt5 -project -recursive -Wall -nopwd -o "avalon.pro"  \
+        "CONFIG      += release"                                \
+        "QT          += network sql core widgets webkitwidgets" \
+        "INCLUDEPATH += src"                                    \
+        "DEFINES     += AVALON_PACKAGE"                         \
+        "LIBS        += -laspell -lz"                           \
         "${PWD}/src"
 
     qmake-qt5 "avalon.pro"

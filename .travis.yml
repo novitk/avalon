@@ -6,16 +6,11 @@ compiler:
 branches:
   only:
     - master
+    - 2.0
     - 1.0
-
-env:
-  matrix:
-    - QT_SELECT=4
-    - QT_SELECT=5
 
 before_install:
   - sudo apt-get -y install zlib1g-dev libaspell-dev
-  - sudo apt-get -y install libqt4-dev libqtwebkit-dev
   - sudo apt-get -y install qt5-default libqt5webkit5-dev
 
 script:

@@ -1,18 +1,18 @@
-Source: avalon2
+Source: avalon3
 Section: news
 Priority: optional
 Maintainer: Anton Batenev <antonbatenev@yandex.ru>
 Build-Depends: debhelper (>= 7.0.50~), lsb-release, zlib1g-dev, libaspell-dev,
- libqt5webkit5-dev (>= 5.0) | libqtwebkit-dev,
- qt5-default (>= 5.0) | libqt4-dev (>= 4.8),
- qtbase5-dev (>= 5.0) | libqt4-dev (>= 4.8)
+ libqt5webkit5-dev (>= 5.0),
+ qt5-default (>= 5.0),
+ qtbase5-dev (>= 5.0)
 Standards-Version: 3.9.4
 Vcs-Git: https://github.com/abbat/avalon.git
 Vcs-Browser: https://github.com/abbat/avalon
 Homepage: https://github.com/abbat/avalon
 
-Package: avalon2
-Conflicts: avalon
+Package: avalon3
+Conflicts: avalon, avalon2
 Architecture: any
 Suggests: graphviz
 Recommends: aspell-ru, aspell-en
@@ -20,10 +20,10 @@ Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: RSDN offline client
  Offile client for Russian Software Developer Network
 
-Package: avalon2-dbg
+Package: avalon3-dbg
 Section: debug
 Priority: extra
-Depends: avalon2 (= ${binary:Version}), ${misc:Depends}
+Depends: avalon3 (= ${binary:Version}), ${misc:Depends}
 Architecture: any
 Description: Debug symbols for avalon
  Offile client for Russian Software Developer Network

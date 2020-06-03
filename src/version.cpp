@@ -15,7 +15,7 @@ int getBuildNumber ()
 
 QString getVersionString ()
 {
-	return QString("2.0.") + QString::number(getBuildNumber());
+	return QString("3.0.") + QString::number(getBuildNumber());
 }
 //----------------------------------------------------------------------------------------------
 
