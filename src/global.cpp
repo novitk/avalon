@@ -21,16 +21,6 @@ AGlobal::AGlobal ()
 	// белый список шифров (в порядке предпочтения)
 	static const char* AVALON_WHITELIST_CIPHERS[] =
 	{
-#if QT_VERSION < 0x050400
-		// белый список шифров tls1 (см. ниже про версии Qt и поддержку)
-		"ECDHE-ECDSA-AES128-SHA",   // TLSv1 Kx=ECDH Au=ECDSA Enc=AES(128) Mac=SHA1
-		"ECDHE-RSA-AES128-SHA",     // TLSv1 Kx=ECDH Au=RSA   Enc=AES(128) Mac=SHA1
-		"ECDHE-ECDSA-AES256-SHA",   // TLSv1 Kx=ECDH Au=ECDSA Enc=AES(256) Mac=SHA1
-		"ECDHE-RSA-AES256-SHA",     // TLSv1 Kx=ECDH Au=RSA   Enc=AES(256) Mac=SHA1
-		"AES128-SHA",               // SSLv3 Kx=RSA  Au=RSA   Enc=AES(128) Mac=SHA1
-		"AES256-SHA",               // SSLv3 Kx=RSA  Au=RSA   Enc=AES(256) Mac=SHA1
-#else
-		// белый список шифров tls1+ (см. ниже про версии Qt и поддержку)
 		"TLS_AES_128_GCM_SHA256",          // TLSv1.3 Kx=any  Au=any   Enc=AESGCM(128) Mac=AEAD
 		"TLS_AES_256_GCM_SHA384",          // TLSv1.3 Kx=any  Au=any   Enc=AESGCM(256) Mac=AEAD
 		"ECDHE-ECDSA-AES128-GCM-SHA256",   // TLSv1.2 Kx=ECDH Au=ECDSA Enc=AESGCM(128) Mac=AEAD
@@ -51,7 +41,7 @@ AGlobal::AGlobal ()
 		"AES256-GCM-SHA384",               // TLSv1.2 Kx=RSA  Au=RSA   Enc=AESGCM(256) Mac=AEAD
 		"AES256-SHA256",                   // TLSv1.2 Kx=RSA  Au=RSA   Enc=AES(256)    Mac=SHA256
 		"AES256-SHA",                      // SSLv3   Kx=RSA  Au=RSA   Enc=AES(256)    Mac=SHA1
-#endif
+
 		NULL
 	};
 
@@ -78,24 +68,11 @@ AGlobal::AGlobal ()
 		whitelist_ciphers++;
 	}
 
-#if QT_VERSION < 0x050000
-	// до версии 5.0.x поддерживается только QSsl::TLSv1
-	// т.о. для отключения SSLv3 включаем принудительный TLSv1
-	ssl_config.setProtocol(QSsl::TlsV1);
-#else
-	#if QT_VERSION < 0x050400
-		// до версии 5.4.0 для QSsl::SecureProtocols используется
-		// SSLv23_client_method и SSL_OP_ALL | SSL_OP_NO_SSLv2
-		// т.о. для отключения SSLv3 включаем принудительный TLSv1
-		ssl_config.setProtocol(QSsl::TlsV1_0);
-	#else
-		// в версии 5.4.0 для QSsl::SecureProtocols используется
-		// SSLv23_client_method и SSL_OP_ALL | SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3
-		// т.о. можем работать TLSv1+
-		ssl_config.setProtocol(QSsl::SecureProtocols);
-	#endif
-#endif
-
+	// cо времени POODLE прошло более 5 лет - можно сделать предположение,
+	// что к текущему моменту все успели обновить OpenSSL и отключили SSLv3,
+	// отключение принудительного QSsl::TlsV1 позволит отображать изображения
+	// передаваемые по TLSv1.2+
+	ssl_config.setProtocol(QSsl::SecureProtocols);
 	ssl_config.setCiphers(cipher_list);
 
 	QSslConfiguration::setDefaultConfiguration(ssl_config);
