@@ -3,7 +3,9 @@
 set -e
 
 # версия qt
-export QT_SELECT=5
+if [ -z "${QT_SELECT}" ]; then
+	export QT_SELECT=5
+fi
 
 # имя проекта
 PROJECT_NAME="avalon"
@@ -22,6 +24,7 @@ else
 fi
 
 # создание pro-файла
+BUILD_DIR=$(pwd)
 qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "CONFIG      += debug_and_release"                        \
     "QT          += ${QT_OPTS}"                               \
@@ -29,7 +32,7 @@ qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
     "LIBS        += -laspell -lz"                             \
     "macx { QMAKE_CXX = clang }"                              \
     "macx { ICON = icons/avalon.icns }"                       \
-    src
+    "${BUILD_DIR}/src"
 
 # создание make-файлов
 qmake ${PROJECT_NAME}.pro
