@@ -102,6 +102,7 @@ body {
 	color           : black;
 	text-decoration : none;
 }
+
 #text {
 	margin-left  : 5px;
 	margin-right : 5px;
@@ -148,6 +149,10 @@ body {
 
 #text p.quote_green {
 	color : darkgreen;
+}
+
+#text img {
+	max-width : 90vw;
 }
 
 #text span.alert {
