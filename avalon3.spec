@@ -5,7 +5,7 @@ Summary:        RSDN offline client
 Group:          Applications/Internet
 License:        BSD-2-clause
 URL:            https://github.com/abbat/avalon
-Conflicts:      avalon
+Conflicts:      avalon, avalon2
 BuildRequires:  aspell-devel, zlib-devel
 Source0:        https://build.opensuse.org/source/home:antonbatenev:avalon/avalon3/avalon3_%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
