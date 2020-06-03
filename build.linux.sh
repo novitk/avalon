@@ -3,7 +3,7 @@
 set -e
 
 # версия qt
-export QT_SELECT=4
+export QT_SELECT=5
 
 # имя проекта
 PROJECT_NAME="avalon"
@@ -23,11 +23,12 @@ fi
 
 # создание pro-файла
 qmake -project -recursive -Wall -nopwd -o ${PROJECT_NAME}.pro \
-    "CONFIG += debug_and_release" \
-    "QT += ${QT_OPTS}" \
-    "LIBS += -laspell -lz" \
-    "macx { QMAKE_CXX = clang }" \
-    "macx { ICON = icons/avalon.icns }" \
+    "CONFIG      += debug_and_release"                        \
+    "QT          += ${QT_OPTS}"                               \
+    "INCLUDEPATH += src"                                      \
+    "LIBS        += -laspell -lz"                             \
+    "macx { QMAKE_CXX = clang }"                              \
+    "macx { ICON = icons/avalon.icns }"                       \
     src
 
 # создание make-файлов
