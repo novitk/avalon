@@ -75,6 +75,15 @@
 #include <QSslConfiguration>
 #include <QNetworkAccessManager>
 
+// на момент ответвления 3.x минимально поддерживаемая версия Qt 5.9 LTS (5.9.9)
+#if QT_VERSION < 0x050909
+	#ifndef _MSC_VER
+		#pragma message "Qt 5.9.9+ recommended"
+	#else
+		#pragma message("Qt 5.9.9+ recommended")
+	#endif
+#endif
+
 //
 // системные заголовочные файлы
 //
