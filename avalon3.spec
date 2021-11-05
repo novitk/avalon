@@ -1,5 +1,5 @@
 Name:           avalon3
-Version:        3.0.0
+Version:        3.0.1
 Release:        1
 Summary:        RSDN offline client
 Group:          Applications/Internet
@@ -65,5 +65,5 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Wed Jun 3 2020 Anton Batenev <antonbatenev@yandex.ru> 3.0.0-1
+* Fri Nov 5 2021 Anton Batenev <antonbatenev@yandex.ru> 3.0.1-1
 - Initial RPM release

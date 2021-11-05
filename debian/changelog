@@ -1,3 +1,9 @@
+avalon3 (3.0.1) unstable; urgency=low
+
+  * Поддержка Debian 11 (bullseye) / Ubuntu 20.04 (hirsute)
+
+ -- Anton Batenev <antonbatenev@yandex.ru>  Fri, 05 Nov 2021 19:24:42 +0300
+
 avalon3 (3.0.0) unstable; urgency=low
 
   * Переключение на версию 3.0.0
